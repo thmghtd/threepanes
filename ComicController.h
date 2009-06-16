@@ -1,17 +1,13 @@
-// Copyright 2009 Max Howell (created on 02/02/2009)
-// Licensed with GPL version 3
+// Copyright 2009 Max Howell
 
 #import <Cocoa/Cocoa.h>
-#import <WebKit/WebView.h>
 
 
-@interface WebViewController : NSObject 
+@interface ComicController:NSObject
 {
-    IBOutlet WebView *webview;
-    
+    IBOutlet NSImageView* view;
     NSMutableArray* urls;
 }
 - (IBAction)next:(id)sender;
-
 
 @end

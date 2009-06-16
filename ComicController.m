@@ -1,12 +1,12 @@
-// Copyright 2009 Max Howell (created on 02/02/2009)
-// Licensed with GPL version 3
-
-#import "WebViewController.h"
-#include <stdio.h>
+// Copyright 2009 Max Howell
+#import "ComicController.h"
+#import "NSString+mxcl.h"
+#import <stdio.h>
 
 
 //TODO more Cocoa like if there is such a thing
-//TODO check every url looks sane, ie starts with http, or if it doesn't looks reasonable, then prepend the http
+//TODO check every url looks sane, ie starts with http, or if it doesn't looks
+//  reasonable, then prepend the http
 NSMutableArray* urlsFromScript( NSString* command )
 {
     // 10 is typical, so lets be conservative
@@ -21,7 +21,8 @@ NSMutableArray* urlsFromScript( NSString* command )
 
     char buf[2084];
     while (fgets( buf, 2084, pipe ))
-        [urls addObject:[[NSString alloc] initWithUTF8String:buf]];
+        [urls addObject:[NSURL URLWithString:
+                         [[NSString stringWithUTF8String:buf] strip]]];
 
     pclose( pipe );
 
@@ -29,19 +30,37 @@ NSMutableArray* urlsFromScript( NSString* command )
 }
 
 
-@implementation WebViewController
+@implementation ComicController
 
-- (void)awakeFromNib
+-(void)awakeFromNib
 {
     urls = urlsFromScript( @"ruby ../../xkcd.com.rb" );
-    [urls addObjectsFromArray:urlsFromScript( @"ruby ../../explosm.net.rb" )];
-    [webview setMaintainsBackForwardList:false];
+   [urls addObjectsFromArray:urlsFromScript( @"ruby ../../explosm.net.rb" )];
 }
 
-- (IBAction)next:(id)sender
+float titleBarHeight()
 {
-    [webview setMainFrameURL:[urls lastObject]];
-    [urls removeLastObject];
+    NSRect outside = NSMakeRect(0, 0, 100, 100);
+    NSRect inside = [NSWindow contentRectForFrameRect:outside
+                                            styleMask:NSTitledWindowMask];
+    return outside.size.height - inside.size.height;
+    
+} // titleBarHeight
+
+-(IBAction)next:(id)sender
+{
+    NSURL* url = [urls lastObject];
+    NSImage* image = [[NSImage alloc] initWithContentsOfURL:url];
+
+    if(!image)return; //TODO more
+    
+   [view setImage:image];
+   [urls removeLastObject];
+
+    NSRect frame = [[view window] frame];
+    frame.size = [[view image] size];
+    frame.size.height += titleBarHeight();
+  [[view window] setFrame:frame display:true animate:true];
 }
 
 @end
