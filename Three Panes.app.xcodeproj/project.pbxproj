@@ -9,10 +9,11 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		630405E90F3733A20058E192 /* ComicController.m in Sources */ = {isa = PBXBuildFile; fileRef = 630405E80F3733A20058E192 /* ComicController.m */; };
-		63D650DA0FE932440085AC80 /* explosm.net.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D650D60FE932440085AC80 /* explosm.net.rb */; };
-		63D650DB0FE932440085AC80 /* html.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D650D70FE932440085AC80 /* html.rb */; };
-		63D650DC0FE932440085AC80 /* threepanes.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D650D80FE932440085AC80 /* threepanes.rb */; };
-		63D650DD0FE932440085AC80 /* xkcd.com.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D650D90FE932440085AC80 /* xkcd.com.rb */; };
+		63D6518B0FE9592F0085AC80 /* cad-comic.com.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D651850FE9592F0085AC80 /* cad-comic.com.rb */; };
+		63D6518C0FE9592F0085AC80 /* explosm.net.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D651860FE9592F0085AC80 /* explosm.net.rb */; };
+		63D6518D0FE9592F0085AC80 /* overcompensating.com.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D651870FE9592F0085AC80 /* overcompensating.com.rb */; };
+		63D6518E0FE9592F0085AC80 /* threepanes.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D651880FE9592F0085AC80 /* threepanes.rb */; };
+		63D6518F0FE9592F0085AC80 /* xkcd.com.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D651890FE9592F0085AC80 /* xkcd.com.rb */; };
 		63EE256B0FE7CB8C00747962 /* NSString+mxcl.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EE256A0FE7CB8C00747962 /* NSString+mxcl.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -30,10 +31,11 @@
 		32CA4F630368D1EE00C91783 /* pc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pc.h; sourceTree = "<group>"; };
 		630405E70F3733A20058E192 /* ComicController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComicController.h; sourceTree = "<group>"; };
 		630405E80F3733A20058E192 /* ComicController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComicController.m; sourceTree = "<group>"; };
-		63D650D60FE932440085AC80 /* explosm.net.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = explosm.net.rb; sourceTree = "<group>"; };
-		63D650D70FE932440085AC80 /* html.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = html.rb; sourceTree = "<group>"; };
-		63D650D80FE932440085AC80 /* threepanes.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = threepanes.rb; sourceTree = "<group>"; };
-		63D650D90FE932440085AC80 /* xkcd.com.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = xkcd.com.rb; sourceTree = "<group>"; };
+		63D651850FE9592F0085AC80 /* cad-comic.com.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = "cad-comic.com.rb"; path = "rb/cad-comic.com.rb"; sourceTree = "<group>"; };
+		63D651860FE9592F0085AC80 /* explosm.net.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = explosm.net.rb; path = rb/explosm.net.rb; sourceTree = "<group>"; };
+		63D651870FE9592F0085AC80 /* overcompensating.com.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = overcompensating.com.rb; path = rb/overcompensating.com.rb; sourceTree = "<group>"; };
+		63D651880FE9592F0085AC80 /* threepanes.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = threepanes.rb; path = rb/threepanes.rb; sourceTree = "<group>"; };
+		63D651890FE9592F0085AC80 /* xkcd.com.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = xkcd.com.rb; path = rb/xkcd.com.rb; sourceTree = "<group>"; };
 		63EE25690FE7CB8C00747962 /* NSString+mxcl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+mxcl.h"; sourceTree = "<group>"; };
 		63EE256A0FE7CB8C00747962 /* NSString+mxcl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+mxcl.m"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -113,7 +115,11 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				63D650D50FE932440085AC80 /* rb */,
+				63D651850FE9592F0085AC80 /* cad-comic.com.rb */,
+				63D651860FE9592F0085AC80 /* explosm.net.rb */,
+				63D651870FE9592F0085AC80 /* overcompensating.com.rb */,
+				63D651880FE9592F0085AC80 /* threepanes.rb */,
+				63D651890FE9592F0085AC80 /* xkcd.com.rb */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
@@ -128,17 +134,6 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		63D650D50FE932440085AC80 /* rb */ = {
-			isa = PBXGroup;
-			children = (
-				63D650D60FE932440085AC80 /* explosm.net.rb */,
-				63D650D70FE932440085AC80 /* html.rb */,
-				63D650D80FE932440085AC80 /* threepanes.rb */,
-				63D650D90FE932440085AC80 /* xkcd.com.rb */,
-			);
-			path = rb;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -186,10 +181,11 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
-				63D650DA0FE932440085AC80 /* explosm.net.rb in Resources */,
-				63D650DB0FE932440085AC80 /* html.rb in Resources */,
-				63D650DC0FE932440085AC80 /* threepanes.rb in Resources */,
-				63D650DD0FE932440085AC80 /* xkcd.com.rb in Resources */,
+				63D6518B0FE9592F0085AC80 /* cad-comic.com.rb in Resources */,
+				63D6518C0FE9592F0085AC80 /* explosm.net.rb in Resources */,
+				63D6518D0FE9592F0085AC80 /* overcompensating.com.rb in Resources */,
+				63D6518E0FE9592F0085AC80 /* threepanes.rb in Resources */,
+				63D6518F0FE9592F0085AC80 /* xkcd.com.rb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

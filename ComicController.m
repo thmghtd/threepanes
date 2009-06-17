@@ -96,8 +96,15 @@ NSArray* comix(NSString* rb)
 -(void)awakeFromNib
 {
     comics = [[NSMutableArray arrayWithCapacity:20] retain];
-   [comics addObjectsFromArray:comix(@"xkcd.com.rb")];
-   [comics addObjectsFromArray:comix(@"explosm.net.rb")];
+    
+    NSArray* contents = [[NSFileManager defaultManager] directoryContentsAtPath:[[NSBundle mainBundle] resourcePath]];
+    NSString* d;
+    for(d in contents){
+        NSLog(d);
+        if([[d pathExtension] isEqualToString:@"rb"] && ![d isEqualToString:@"threepanes.rb"])
+           [comics addObjectsFromArray:comix([d lastPathComponent])];
+    }
+   
     comics = [[comics sortedArrayUsingFunction:sort context:nil] mutableCopy];
 }
 
@@ -113,21 +120,23 @@ float titleBarHeight()
 {
     NSDictionary* comic = [comics lastObject];
     [comics removeLastObject];
-    
+
     NSURL* url = [comic objectForKey:@"URL"];
     NSImage* image = [[NSImage alloc] initWithContentsOfURL:url];
 
-    if(!image)return; //TODO more
+    NSLog(@"%@",url);
     
+    if(!image)return; //TODO more
+
     [view setImage:image];
 
     NSRect frame = [[view window] frame];
     frame.size = [[view image] size];
     frame.size.height += titleBarHeight();
     [[view window] setFrame:frame display:true animate:true];
-    
+
     [[view window] setTitle:[comic objectForKey:@"Title"]];
-    
+
     [[NSUserDefaults standardUserDefaults] setObject:[comic objectForKey:@"UTC"]
                                               forKey:[comic objectForKey:@"Comic"]];
 }
