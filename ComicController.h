@@ -6,7 +6,7 @@
 @interface ComicController:NSObject
 {
     IBOutlet NSImageView* view;
-    NSMutableArray* urls;
+    NSMutableArray* comics;
 }
 - (IBAction)next:(id)sender;
 
