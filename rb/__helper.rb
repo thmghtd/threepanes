@@ -8,19 +8,28 @@ end
 
 abort "Usage: #{$0} comic.rb" if ARGV.empty?
 
-IO.popen("ruby -I. #{ARGV[0]}", "r+") do |pipe|
+IO.popen("ruby -I#{File.dirname __FILE__} #{ARGV[0]}", "r+") do |pipe|
   while url=pipe.gets
     if isvalid url.strip!
-      puts "Script says: #{url}, #{pipe.gets.strip}, #{pipe.gets}"
-      puts
+      puts "==> #{url}"
+      puts "==> #{pipe.gets.strip}"
+      puts "==> #{pipe.gets}"
+      puts "=============================================================================="
     else
-      puts "Fetching: #{url}"
-      data=open(url).read
-      puts "=============================================================================="
-      data.scan /src="\/(.*?\.(jpg|jpeg|png|gif))"/ do |x|
-        puts $1
+      data=''
+      begin
+        puts "<== #{url}"
+        data=open(url).read
+        results=Array.new
+        data.scan /([^ ]+\.(jpg|jpeg|png|gif))/i do results<<$1 end
+        unless results.empty? #or ARGV.include? '--dumb'
+          results.each {|x| puts x}
+        end
+        puts data if ARGV.include? '--full'
+        exit! if ARGV.include? '-1' and not results.empty?
+      rescue
+        puts "ERR Couldn't load: #{url}"
       end
-      puts "=============================================================================="
       pipe.write [data.length].pack("N*")
       pipe.write data
     end

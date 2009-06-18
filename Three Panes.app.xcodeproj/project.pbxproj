@@ -14,6 +14,14 @@
 		63D6518D0FE9592F0085AC80 /* overcompensating.com.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D651870FE9592F0085AC80 /* overcompensating.com.rb */; };
 		63D6518E0FE9592F0085AC80 /* threepanes.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D651880FE9592F0085AC80 /* threepanes.rb */; };
 		63D6518F0FE9592F0085AC80 /* xkcd.com.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D651890FE9592F0085AC80 /* xkcd.com.rb */; };
+		63D651B10FEA890F0085AC80 /* boredandevil.com.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D651A90FEA890F0085AC80 /* boredandevil.com.rb */; };
+		63D651B20FEA890F0085AC80 /* digitalunrestcomic.com.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D651AA0FEA890F0085AC80 /* digitalunrestcomic.com.rb */; };
+		63D651B30FEA890F0085AC80 /* duelinganalogs.com.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D651AB0FEA890F0085AC80 /* duelinganalogs.com.rb */; };
+		63D651B40FEA890F0085AC80 /* joyoftech.com.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D651AC0FEA890F0085AC80 /* joyoftech.com.rb */; };
+		63D651B50FEA890F0085AC80 /* orneryboy.com.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D651AD0FEA890F0085AC80 /* orneryboy.com.rb */; };
+		63D651B60FEA890F0085AC80 /* penny-arcade.com.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D651AE0FEA890F0085AC80 /* penny-arcade.com.rb */; };
+		63D651B70FEA890F0085AC80 /* viruscomix.com.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D651AF0FEA890F0085AC80 /* viruscomix.com.rb */; };
+		63D651B80FEA890F0085AC80 /* whiteninjacomics.com.rb in Resources */ = {isa = PBXBuildFile; fileRef = 63D651B00FEA890F0085AC80 /* whiteninjacomics.com.rb */; };
 		63EE256B0FE7CB8C00747962 /* NSString+mxcl.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EE256A0FE7CB8C00747962 /* NSString+mxcl.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -36,6 +44,14 @@
 		63D651870FE9592F0085AC80 /* overcompensating.com.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = overcompensating.com.rb; path = rb/overcompensating.com.rb; sourceTree = "<group>"; };
 		63D651880FE9592F0085AC80 /* threepanes.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = threepanes.rb; path = rb/threepanes.rb; sourceTree = "<group>"; };
 		63D651890FE9592F0085AC80 /* xkcd.com.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = xkcd.com.rb; path = rb/xkcd.com.rb; sourceTree = "<group>"; };
+		63D651A90FEA890F0085AC80 /* boredandevil.com.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = boredandevil.com.rb; path = rb/boredandevil.com.rb; sourceTree = "<group>"; };
+		63D651AA0FEA890F0085AC80 /* digitalunrestcomic.com.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = digitalunrestcomic.com.rb; path = rb/digitalunrestcomic.com.rb; sourceTree = "<group>"; };
+		63D651AB0FEA890F0085AC80 /* duelinganalogs.com.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = duelinganalogs.com.rb; path = rb/duelinganalogs.com.rb; sourceTree = "<group>"; };
+		63D651AC0FEA890F0085AC80 /* joyoftech.com.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = joyoftech.com.rb; path = rb/joyoftech.com.rb; sourceTree = "<group>"; };
+		63D651AD0FEA890F0085AC80 /* orneryboy.com.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = orneryboy.com.rb; path = rb/orneryboy.com.rb; sourceTree = "<group>"; };
+		63D651AE0FEA890F0085AC80 /* penny-arcade.com.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = "penny-arcade.com.rb"; path = "rb/penny-arcade.com.rb"; sourceTree = "<group>"; };
+		63D651AF0FEA890F0085AC80 /* viruscomix.com.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = viruscomix.com.rb; path = rb/viruscomix.com.rb; sourceTree = "<group>"; };
+		63D651B00FEA890F0085AC80 /* whiteninjacomics.com.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = whiteninjacomics.com.rb; path = rb/whiteninjacomics.com.rb; sourceTree = "<group>"; };
 		63EE25690FE7CB8C00747962 /* NSString+mxcl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+mxcl.h"; sourceTree = "<group>"; };
 		63EE256A0FE7CB8C00747962 /* NSString+mxcl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+mxcl.m"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -115,6 +131,14 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				63D651A90FEA890F0085AC80 /* boredandevil.com.rb */,
+				63D651AA0FEA890F0085AC80 /* digitalunrestcomic.com.rb */,
+				63D651AB0FEA890F0085AC80 /* duelinganalogs.com.rb */,
+				63D651AC0FEA890F0085AC80 /* joyoftech.com.rb */,
+				63D651AD0FEA890F0085AC80 /* orneryboy.com.rb */,
+				63D651AE0FEA890F0085AC80 /* penny-arcade.com.rb */,
+				63D651AF0FEA890F0085AC80 /* viruscomix.com.rb */,
+				63D651B00FEA890F0085AC80 /* whiteninjacomics.com.rb */,
 				63D651850FE9592F0085AC80 /* cad-comic.com.rb */,
 				63D651860FE9592F0085AC80 /* explosm.net.rb */,
 				63D651870FE9592F0085AC80 /* overcompensating.com.rb */,
@@ -186,6 +210,14 @@
 				63D6518D0FE9592F0085AC80 /* overcompensating.com.rb in Resources */,
 				63D6518E0FE9592F0085AC80 /* threepanes.rb in Resources */,
 				63D6518F0FE9592F0085AC80 /* xkcd.com.rb in Resources */,
+				63D651B10FEA890F0085AC80 /* boredandevil.com.rb in Resources */,
+				63D651B20FEA890F0085AC80 /* digitalunrestcomic.com.rb in Resources */,
+				63D651B30FEA890F0085AC80 /* duelinganalogs.com.rb in Resources */,
+				63D651B40FEA890F0085AC80 /* joyoftech.com.rb in Resources */,
+				63D651B50FEA890F0085AC80 /* orneryboy.com.rb in Resources */,
+				63D651B60FEA890F0085AC80 /* penny-arcade.com.rb in Resources */,
+				63D651B70FEA890F0085AC80 /* viruscomix.com.rb in Resources */,
+				63D651B80FEA890F0085AC80 /* whiteninjacomics.com.rb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

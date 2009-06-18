@@ -31,7 +31,7 @@ NSMutableArray* comicsFromScript(NSString* rb)
 
     NSString* s;
     while(s = fgetns(pipe))
-    {        
+    {
         NSURL* url = [NSURL URLWithString:s];
         NSString* ext = [[s pathExtension] lowercaseString];
         
@@ -70,7 +70,7 @@ NSMutableArray* comicsFromScript(NSString* rb)
 
 NSInteger sort(id a, id b, void* v)
 {
-    return [[a objectForKey:@"UTC"] compare:[b objectForKey:@"UTC"]];
+    return [[b objectForKey:@"UTC"] compare:[a objectForKey:@"UTC"]];
 }
 
 void prune(NSMutableArray* comics, time_t before)
@@ -122,9 +122,8 @@ float titleBarHeight()
     [comics removeLastObject];
 
     NSURL* url = [comic objectForKey:@"URL"];
-    NSImage* image = [[NSImage alloc] initWithContentsOfURL:url];
-
     NSLog(@"%@",url);
+    NSImage* image = [[NSImage alloc] initWithContentsOfURL:url];
     
     if(!image)return; //TODO more
 

@@ -9,18 +9,22 @@ def get url
   $stdout.flush
   n=$stdin.read(4).unpack("N*").first
   data=$stdin.read n
+rescue NoMethodError
+  nil
 end
 
 def comic url, date, title
+  url='http://example.com/nil.png' if url.nil? or url.empty?
+  
   if ['png','jpg','jpeg','gif'].include? File.extname(url).downcase[1..-1]
     
     url="http://#{File.basename $0, '.rb'}/#{url}" if url[0..6] != "http://"
 
-    $stdout.puts url
+    $stdout.puts url.strip
     $stdout.puts date.to_i
-    $stdout.puts title
+    $stdout.puts title.strip
     $stdout.flush
   else
-    $stderr.puts 'Unsupported image format'
+    $stderr.puts "Unsupported image format: #{url}"
   end
 end

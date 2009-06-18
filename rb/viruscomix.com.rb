@@ -1,10 +1,9 @@
-# Copyright 2009 Max Howell
 require 'threepanes'
 
-data=get 'http://xkcd.com/rss.xml'
+data=get 'http://www.viruscomix.com/rss.xml'
 rss=RSS::Parser.parse data, false
 
 rss.items.each do |item|
-  item.description =~ /src="(.*?)"/
+  get(item.link) =~ /="([^"]+?\.jpg)"/
   comic $1, item.pubDate, item.title
 end
