@@ -6,6 +6,6 @@ rss=RSS::Parser.parse data, false
 
 rss.items.each do |item|
   next unless item.category.to_s.include? 'comic'
-  %r{(http://www.duelinganalogs.com/comics/\d\d\d\d-\d\d-\d\d.png)} =~ item.description
+  %r{(http://www.duelinganalogs.com/comics/\d\d\d\d-\d\d-\d\d.(jpg|png))} =~ item.description
   comic $1, item.pubDate, item.title
 end

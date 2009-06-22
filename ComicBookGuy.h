@@ -5,11 +5,9 @@
   * is mostly asyncronous */
 @interface ComicBookGuy:NSObject{
     NSMutableArray* boys;
-    NSMutableArray* comics;
     NSObject* delegate;
 }
--(id)initWithDelegate:(NSObject*)delegate;
--(NSMutableArray*)comics;
+-(id)initWithDelegate:(id)delegate;
 @end
 
 

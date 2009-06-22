@@ -1,6 +1,6 @@
 # Copyright 2009 Max Howell
 require 'threepanes'
-
+exit
 data=get 'http://www.rsspect.com/rss/digitalunrest.xml'
 rss=RSS::Parser.parse data, false
 

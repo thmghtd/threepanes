@@ -21,13 +21,11 @@
 }
 
 -(NSString*)fgetns
-{
-    NSLog(@"Getting: %@", name);
-    
+{   
     // http://support.microsoft.com/kb/q208427/
     // http://www.boutell.com/newfaq/misc/urllength.html
     char buf[2084];
-    if(!fgets(buf, 2084, pipe))return nil;
+    if(!fgets(buf, sizeof(buf), pipe))return nil;
     return [[NSString stringWithUTF8String:buf] strip];
 }
 
@@ -68,8 +66,12 @@ static PaperBoy* find_boy(NSArray* boys, NSURLConnection* http)
 {
     for(;;){
         NSString* s = [boy fgetns];
-        if(s == nil)break;
-        
+        if(!s){
+            [boys removeObject:boy];
+            if([boys count] == 0)
+                [delegate performSelector:@selector(deliveriesComplete) withObject:nil];
+            break;
+        }
         NSURL* url = [NSURL URLWithString:s];
         NSString* ext = [[s pathExtension] lowercaseString];
         
@@ -78,18 +80,20 @@ static PaperBoy* find_boy(NSArray* boys, NSURLConnection* http)
 #undef _
             NSNumber* time = [NSNumber numberWithUnsignedInt:[[boy fgetns] intValue]];            
             time_t last_time = [[[NSUserDefaults standardUserDefaults] objectForKey:[boy name]] unsignedIntValue];
+            NSString* title = [boy fgetns];
             
-            if(last_time < [time unsignedIntValue]){           
-                NSString* title = [boy fgetns];
-                
-                [delegate delivery:[NSDictionary dictionaryWithObjectsAndKeys:
-                                   url, @"URL",
-                                   time, @"UTC",
-                                   title, @"Title",
-                                   [boy name], @"Comic",
-                                   nil]];
-            }
+            NSLog(@"Got comic! %@ for %@", url, [boy name]);
+            
+            if(last_time < [time unsignedIntValue])
+                [delegate performSelector:@selector(delivery:) 
+                               withObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                           url, @"URL",
+                                           time, @"UTC",
+                                           title, @"Title",
+                                           [boy name], @"Comic",
+                                           nil]];
         }else{
+            NSLog(@"Requesting %@ for %@", url, [boy name]);
             [boy setConnection:[NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url]
                                                              delegate:self]];
             break;
@@ -107,7 +111,7 @@ static inline NSArray* scripts(NSString* path)
     return scripts;
 }
 
--(id)initWithDelegate:(NSObject*)_delegate
+-(id)initWithDelegate:(id)_delegate
 {
     self = [super init];
     delegate = _delegate;
@@ -120,17 +124,21 @@ static inline NSArray* scripts(NSString* path)
     for(NSString* scriptname in scripts(resources))
     {
         PaperBoy* boy = [[PaperBoy alloc] initWithName:scriptname
-                                          shellCommand:[command stringByAppendingString:scriptname]
-                                                           ];
+                                          shellCommand:[command stringByAppendingString:scriptname]];
         [boys addObject:boy];
         [self gets:boy];
     }
     return self;
 }
 
--(void)connection:(NSURLConnection*)http didReceiveResponse:(NSURLResponse*)response
+-(void)connection:(NSURLConnection*)http didReceiveResponse:(NSHTTPURLResponse*)response
 {
     [[find_boy(boys, http) data] setLength:0];
+    
+    if([response statusCode] == 404){
+        [http cancel];
+        [self connectionDidFinishLoading:http];
+    }
 }
 
 //–(void)connection:willCacheResponse:
@@ -147,7 +155,7 @@ static inline NSArray* scripts(NSString* path)
     PaperBoy* boy = find_boy(boys, http);
     uint32_t const n = [[boy data] length];
     
-    NSLog(@"Received %d bytes for %@", n, [boy name]);
+    NSLog(@"HTTP GOT %d bytes for %@", n, [boy name]);
     
     // first write the size of the data in network-byte-order
     uint32_t size_of_index = htonl(n);
@@ -157,11 +165,6 @@ static inline NSArray* scripts(NSString* path)
     fflush([boy pipe]);
     
     [self gets:boy];
-}
-
--(NSMutableArray*)comics
-{
-    return comics;
 }
 
 @end

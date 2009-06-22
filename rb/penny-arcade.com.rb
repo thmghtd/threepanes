@@ -3,7 +3,7 @@ require 'threepanes'
 data=get 'http://feeds.penny-arcade.com/pa-mainsite'
 rss=RSS::Parser.parse data, false
 
-rss.items.each do |item|
+rss.items.reverse.each do |item|
   next unless /^New Comic :/ =~ item.description
   year=item.pubDate.year
   month=item.pubDate.month.to_s.rjust 2, '0'
