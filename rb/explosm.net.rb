@@ -2,9 +2,9 @@
 require 'threepanes'
 
 data=get 'http://feeds.feedburner.com/Explosm'
-rss=RSS::Parser.parse data
+rss=RSS::Parser.parse data, false
 
-rss.items.each do |item|
+rss.items.reverse.each do |item|
   get(item.link)=~%r[src="(http://www.explosm.net/db/files/Comics/.*?)"]
   comic $1, item.pubDate, item.title
 end
