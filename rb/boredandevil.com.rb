@@ -11,7 +11,7 @@ dates=Array.new
 data.scan /href="archive.php\?date=(\d\d\d\d-\d\d-\d\d)"/ do
   dates<<$1
 end
-dates.reverse[0..10].each do |date|
+dates.each do |date|
   comic "http://www.boredandevil.com/strips/#{date}.gif",
         Time.parse(date),
         date

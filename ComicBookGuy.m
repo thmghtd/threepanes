@@ -1,15 +1,15 @@
 // Copyright 2009 Max Howell
 #import "ComicBookGuy.h"
 #import "NSString+mxcl.h"
-
+#import "comic.h"
+#define NSLog(format, ...)
 
 @implementation PaperBoy
 
 -(id)initWithName:(NSString*)_name shellCommand:(NSString*)cmd
 {
     self = [super init];
-    name = _name;
-    [name retain];
+    name = [_name retain];
     pipe = popen([cmd UTF8String], "r+");
     data = [[NSMutableData alloc] initWithCapacity:0];
     return self;
@@ -18,6 +18,7 @@
 -(void)setConnection:(NSURLConnection*)connection
 {
     http = connection;
+    [http retain];
 }
 
 -(NSString*)fgetns
@@ -78,20 +79,36 @@ static PaperBoy* find_boy(NSArray* boys, NSURLConnection* http)
 #define _(x) [ext isEqualToString:x]
         if(_(@"png") || _(@"jpg") || _(@"jpeg") || _(@"gif")){
 #undef _
-            NSNumber* time = [NSNumber numberWithUnsignedInt:[[boy fgetns] intValue]];            
+            
+#if __DEBUG__
+            //TODO set these once in the boy object!
+            time_t last_time = time(0);
+            struct tm* tm = localtime(&last_time);
+            tm->tm_sec = 0;
+            tm->tm_min = 0;
+            tm->tm_hour = 0;
+            tm->tm_mday -= 2;
+            last_time = mktime(tm);
+#else
             time_t last_time = [[[NSUserDefaults standardUserDefaults] objectForKey:[boy name]] unsignedIntValue];
+#endif
+            time_t time = [[boy fgetns] integerValue];
+            
+            NSLog(@"td of %d for %@ for %@", last_time-time, url, [boy name]);
+            
             NSString* title = [boy fgetns];
             
-            NSLog(@"Got comic! %@ for %@", url, [boy name]);
-            
-            if(last_time < [time unsignedIntValue])
-                [delegate performSelector:@selector(delivery:) 
-                               withObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                           url, @"URL",
-                                           time, @"UTC",
-                                           title, @"Title",
-                                           [boy name], @"Comic",
-                                           nil]];
+            if(last_time < time){
+                comic_t* comic = malloc(sizeof(comic_t));
+                comic->url = [url retain];
+                comic->title = [title retain];
+                comic->utc = time;
+                comic->ident = [[boy name] retain];
+                comic->www = nil;
+                comic->image = nil;
+                NSLog(@"Got comic! %@ for %@", url, [boy name]);
+                [delegate delivery:comic];
+            }
         }else{
             NSLog(@"Requesting %@ for %@", url, [boy name]);
             [boy setConnection:[NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url]
@@ -106,7 +123,7 @@ static inline NSArray* scripts(NSString* path)
     NSArray* files = [[NSFileManager defaultManager] directoryContentsAtPath:path];
     NSMutableArray* scripts = [NSMutableArray arrayWithCapacity:[files count]];
     for(NSString* fn in files)
-        if([[fn pathExtension] isEqualToString:@"rb"] && ![fn isEqualToString:@"threepanes.rb"])
+        if(![fn isEqualToString:@"threepanes.rb"])
             [scripts addObject:[fn lastPathComponent]];
     return scripts;
 }
@@ -118,7 +135,7 @@ static inline NSArray* scripts(NSString* path)
     
     boys = [[NSMutableArray alloc] initWithCapacity:10];
     
-    NSString* resources = [[NSBundle mainBundle] resourcePath];
+    NSString* resources = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"rb"];
     NSString* command = [NSString stringWithFormat:@"ruby -I'%@' '%@/'", resources, resources];
     
     for(NSString* scriptname in scripts(resources))
@@ -163,6 +180,8 @@ static inline NSArray* scripts(NSString* path)
     // now write the data itself           
     fwrite([[boy data] bytes], sizeof(char), n, [boy pipe]);
     fflush([boy pipe]);
+    
+    [http release];
     
     [self gets:boy];
 }

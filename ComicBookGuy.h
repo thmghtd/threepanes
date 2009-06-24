@@ -17,5 +17,4 @@
     NSURLConnection* http;
     NSMutableData* data;
 }
-
 @end
