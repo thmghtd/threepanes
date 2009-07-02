@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		630405E90F3733A20058E192 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 630405E80F3733A20058E192 /* MainWindowController.m */; };
+		63669DC40FFCEFCA005832BC /* MHImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63669DC30FFCEFCA005832BC /* MHImageView.m */; };
 		63A5445D0FF2827D008C35B1 /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = 63A5445C0FF2827D008C35B1 /* Credits.html */; };
 		63A545A40FF3C65B008C35B1 /* threepanes.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63A545A30FF3C65B008C35B1 /* threepanes.icns */; };
 		63D04EF60FF11F4E00FDE21D /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D04EF50FF11F4E00FDE21D /* ImageViewController.m */; };
@@ -31,6 +32,8 @@
 		32CA4F630368D1EE00C91783 /* pc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pc.h; sourceTree = "<group>"; };
 		630405E70F3733A20058E192 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = "<group>"; };
 		630405E80F3733A20058E192 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowController.m; sourceTree = "<group>"; };
+		63669DC20FFCEFCA005832BC /* MHImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHImageView.h; sourceTree = "<group>"; };
+		63669DC30FFCEFCA005832BC /* MHImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHImageView.m; sourceTree = "<group>"; };
 		63A5445C0FF2827D008C35B1 /* Credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Credits.html; sourceTree = "<group>"; };
 		63A545A30FF3C65B008C35B1 /* threepanes.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = threepanes.icns; sourceTree = "<group>"; };
 		63D04EF40FF11F4E00FDE21D /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
@@ -60,7 +63,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				63FBB1EA0FF1562B005E7D4B /* comic.h */,
+				63669DC20FFCEFCA005832BC /* MHImageView.h */,
+				63669DC30FFCEFCA005832BC /* MHImageView.m */,
 				63D04EF40FF11F4E00FDE21D /* ImageViewController.h */,
 				63D04EF50FF11F4E00FDE21D /* ImageViewController.m */,
 				630405E70F3733A20058E192 /* MainWindowController.h */,
@@ -115,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				32CA4F630368D1EE00C91783 /* pc.h */,
+				63FBB1EA0FF1562B005E7D4B /* comic.h */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
 			name = "Other Sources";
@@ -205,6 +210,7 @@
 				63EE256B0FE7CB8C00747962 /* NSString+mxcl.m in Sources */,
 				63D651CA0FEAC3AB0085AC80 /* ComicBookGuy.m in Sources */,
 				63D04EF60FF11F4E00FDE21D /* ImageViewController.m in Sources */,
+				63669DC40FFCEFCA005832BC /* MHImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

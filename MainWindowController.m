@@ -17,7 +17,9 @@
                                afterDelay:0];
     [spinner startAnimation:self];
     [self performSelector:@selector(windowDidMove:) withObject:nil];
+    [scrollview setVerticalLineScroll:70];
     [window center];
+
 }
 
 -(void)updateDockBadge
@@ -135,4 +137,61 @@ static bool show_scroller = false;
     return YES;
 }
 
+@end
+
+
+@interface NSScrollView (mxcl)
+@end
+@implementation NSScrollView (mxcl)
+
+-(BOOL)acceptsFirstResponder
+{
+    return YES;
+}
+
+-(BOOL)becomeFirstResponder
+{
+    return YES;
+}
+
+-(BOOL)resignFirstResponder
+{
+    return YES;
+}
+
+#define SCROLL_MACRO(OPERATOR) \
+    NSView *dv = [self documentView]; \
+    NSPoint point = [dv visibleRect].origin; \
+    point.y OPERATOR [self verticalLineScroll]; \
+    [dv scrollPoint:point];
+
+//FIXME it seems insane that I have to implement these myself!
+-(void)scrollLineUp:(id)sender
+{
+    SCROLL_MACRO(-=)
+}
+-(void)scrollLineDown:(id)sender
+{
+    SCROLL_MACRO(+=)
+}
+
+-(void)keyDown:(NSEvent*)event
+{
+    unichar c = [[event characters] characterAtIndex:0];
+
+    switch(c){
+        case NSUpArrowFunctionKey:
+            [self scrollLineUp:nil];
+            break;
+        case NSDownArrowFunctionKey:
+            [self scrollLineDown:nil];
+            break;
+        case 0x0020: // space key
+            [self scrollPageDown:nil];
+            break;
+        default:
+            [super keyDown:event];
+            break;
+    }
+}
 @end

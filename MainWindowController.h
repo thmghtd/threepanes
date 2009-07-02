@@ -11,6 +11,8 @@
     IBOutlet NSScrollView* scrollview;
     IBOutlet ImageViewController* comcon;
     IBOutlet NSImageView* view;
+    IBOutlet NSMenuItem* prev;
+    IBOutlet NSMenuItem* next;
     
     NSRect idealframe;  
     NSPoint anchor; /** the main window centers about this */

@@ -40,6 +40,18 @@ end
 
 
 if $0 == __FILE__
+  if ARGV[0] == '--help'
+    puts "Typical creation of script would work something like this:"
+    puts <<-sput
+    curl http://foo.com/rss.xml | mate
+    cp xkcd.com.rb foo.com.rb
+    mate foo.com.rb
+    #{$0} foo.com.rb
+    #{$0} foo.com.rb --dumb
+    sput
+    exit
+  end
+
   abort "Usage: #{$0} comic.rb" if ARGV.empty?
 
   require 'open-uri'
