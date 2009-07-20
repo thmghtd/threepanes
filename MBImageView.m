@@ -1,7 +1,7 @@
 // Copyright 2009 Max Howell
-#import "MHImageView.h"
+#import "MBImageView.h"
 
-@implementation MHImageView
+@implementation MBImageView
 
 -(void)setFrame:(NSRect)newFrame
 {

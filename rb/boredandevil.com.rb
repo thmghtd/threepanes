@@ -1,18 +1,15 @@
 # Copyright 2009 Max Howell
 require 'threepanes'
 
-data=get "http://www.boredandevil.com/year.php?year=#{Time.now.year}"
-# the xml doesn't parse!
-data.gsub! /<description>.*?<\/description>/mi, '<description></description>'
-# AND the RSS is invalid!
-data.gsub! /pubdate/, 'pubDate'
+puts "Bored and Evil"
+puts "Sitcom"
 
-dates=Array.new
-data.scan /href="archive.php\?date=(\d\d\d\d-\d\d-\d\d)"/ do
-  dates<<$1
-end
-dates.each do |date|
-  comic "http://www.boredandevil.com/strips/#{date}.gif",
-        Time.parse(date),
-        date
+data=get "http://www.boredandevil.com/year.php?year=#{Time.now.year}"
+
+data.scan /href="archive\.php\?date=((\d\d\d\d)-(\d\d)-(\d\d))"/ do
+  time=Time.mktime $2, $3, $4, 0, 0, 0, 0
+  $stderr.puts time
+  comic "http://www.boredandevil.com/strips/#{$1}.gif",
+        time,
+        $1 if time > $previous
 end

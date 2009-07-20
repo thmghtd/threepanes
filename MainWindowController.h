@@ -1,6 +1,7 @@
 // Copyright 2009 Max Howell
 #import <Cocoa/Cocoa.h>
 @class ImageViewController;
+@class ComicBookGuy;
 
 
 @interface MainWindowController:NSObject
@@ -13,6 +14,7 @@
     IBOutlet NSImageView* view;
     IBOutlet NSMenuItem* prev;
     IBOutlet NSMenuItem* next;
+    IBOutlet ComicBookGuy* guy;
     
     NSRect idealframe;  
     NSPoint anchor; /** the main window centers about this */

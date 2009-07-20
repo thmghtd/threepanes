@@ -1,10 +1,10 @@
 # Copyright 2009 Max Howell
 require 'threepanes'
 
-data=get 'http://www.amazingsuperpowers.com/category/comics/feed'
-rss=RSS::Parser.parse data, false
+puts "Amazing Super Powers"
+puts "Surreal"
 
-rss.items.reverse.each do |item|
+get_rss 'http://www.amazingsuperpowers.com/category/comics/feed' do |item|
   item.description =~ /src="(.*?)"/
   comic $1, item.pubDate, item.title
 end

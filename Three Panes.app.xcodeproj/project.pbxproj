@@ -9,20 +9,18 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		630405E90F3733A20058E192 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 630405E80F3733A20058E192 /* MainWindowController.m */; };
-		63669DC40FFCEFCA005832BC /* MHImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63669DC30FFCEFCA005832BC /* MHImageView.m */; };
+		63669DC40FFCEFCA005832BC /* MBImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63669DC30FFCEFCA005832BC /* MBImageView.m */; };
+		6368214A100E27D700D63344 /* rb in Resources */ = {isa = PBXBuildFile; fileRef = 63682133100E27D700D63344 /* rb */; };
 		63A5445D0FF2827D008C35B1 /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = 63A5445C0FF2827D008C35B1 /* Credits.html */; };
 		63A545A40FF3C65B008C35B1 /* threepanes.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63A545A30FF3C65B008C35B1 /* threepanes.icns */; };
 		63D04EF60FF11F4E00FDE21D /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D04EF50FF11F4E00FDE21D /* ImageViewController.m */; };
 		63D651CA0FEAC3AB0085AC80 /* ComicBookGuy.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D651C90FEAC3AB0085AC80 /* ComicBookGuy.m */; };
 		63EE256B0FE7CB8C00747962 /* NSString+mxcl.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EE256A0FE7CB8C00747962 /* NSString+mxcl.m */; };
-		63F14F6F0FF546900088A53D /* rb in Resources */ = {isa = PBXBuildFile; fileRef = 63F14F5D0FF546900088A53D /* rb */; };
-		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
@@ -32,8 +30,9 @@
 		32CA4F630368D1EE00C91783 /* pc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pc.h; sourceTree = "<group>"; };
 		630405E70F3733A20058E192 /* MainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindowController.h; sourceTree = "<group>"; };
 		630405E80F3733A20058E192 /* MainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainWindowController.m; sourceTree = "<group>"; };
-		63669DC20FFCEFCA005832BC /* MHImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHImageView.h; sourceTree = "<group>"; };
-		63669DC30FFCEFCA005832BC /* MHImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHImageView.m; sourceTree = "<group>"; };
+		63669DC20FFCEFCA005832BC /* MBImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBImageView.h; sourceTree = "<group>"; };
+		63669DC30FFCEFCA005832BC /* MBImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBImageView.m; sourceTree = "<group>"; };
+		63682133100E27D700D63344 /* rb */ = {isa = PBXFileReference; lastKnownFileType = folder; path = rb; sourceTree = "<group>"; };
 		63A5445C0FF2827D008C35B1 /* Credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Credits.html; sourceTree = "<group>"; };
 		63A545A30FF3C65B008C35B1 /* threepanes.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = threepanes.icns; sourceTree = "<group>"; };
 		63D04EF40FF11F4E00FDE21D /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
@@ -42,7 +41,6 @@
 		63D651C90FEAC3AB0085AC80 /* ComicBookGuy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComicBookGuy.m; sourceTree = "<group>"; };
 		63EE25690FE7CB8C00747962 /* NSString+mxcl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+mxcl.h"; sourceTree = "<group>"; };
 		63EE256A0FE7CB8C00747962 /* NSString+mxcl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+mxcl.m"; sourceTree = "<group>"; };
-		63F14F5D0FF546900088A53D /* rb */ = {isa = PBXFileReference; lastKnownFileType = folder; path = rb; sourceTree = "<group>"; };
 		63FBB1EA0FF1562B005E7D4B /* comic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = comic.h; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Three Panes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Three Panes.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -63,8 +61,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				63669DC20FFCEFCA005832BC /* MHImageView.h */,
-				63669DC30FFCEFCA005832BC /* MHImageView.m */,
+				63669DC20FFCEFCA005832BC /* MBImageView.h */,
+				63669DC30FFCEFCA005832BC /* MBImageView.m */,
 				63D04EF40FF11F4E00FDE21D /* ImageViewController.h */,
 				63D04EF50FF11F4E00FDE21D /* ImageViewController.m */,
 				630405E70F3733A20058E192 /* MainWindowController.h */,
@@ -128,10 +126,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				63F14F5D0FF546900088A53D /* rb */,
+				63682133100E27D700D63344 /* rb */,
 				63A545A30FF3C65B008C35B1 /* threepanes.icns */,
 				8D1107310486CEB800E47090 /* Info.plist */,
-				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
 				63A5445C0FF2827D008C35B1 /* Credits.html */,
 			);
@@ -154,6 +151,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Three Panes" */;
 			buildPhases = (
+				6368214D100E27F900D63344 /* Unbreak Xcode */,
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
@@ -190,15 +188,31 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				63A5445D0FF2827D008C35B1 /* Credits.html in Resources */,
 				63A545A40FF3C65B008C35B1 /* threepanes.icns in Resources */,
-				63F14F6F0FF546900088A53D /* rb in Resources */,
+				6368214A100E27D700D63344 /* rb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6368214D100E27F900D63344 /* Unbreak Xcode */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Unbreak Xcode";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Xcode is broken, it doesn't notice when new files are added to folder references\n# http://majicjungle.com/blog/?p=123\ntouch -cm \"$SRCROOT/rb\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
@@ -210,21 +224,13 @@
 				63EE256B0FE7CB8C00747962 /* NSString+mxcl.m in Sources */,
 				63D651CA0FEAC3AB0085AC80 /* ComicBookGuy.m in Sources */,
 				63D04EF60FF11F4E00FDE21D /* ImageViewController.m in Sources */,
-				63669DC40FFCEFCA005832BC /* MHImageView.m in Sources */,
+				63669DC40FFCEFCA005832BC /* MBImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				089C165DFE840E0CC02AAC07 /* English */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		1DDD58140DA1D0A300B32029 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (

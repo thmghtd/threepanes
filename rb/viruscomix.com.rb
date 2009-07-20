@@ -1,8 +1,9 @@
 require 'threepanes'
 
-data=get 'http://www.viruscomix.com/rss.xml'
-rss=RSS::Parser.parse data, false
+puts "Subnormality!"
+puts "Satire"
 
-item=rss.items.first
-get(item.link) =~ /="([^"]+?\.jpg)"/
-comic $1, item.pubDate, item.title
+get_rss 'http://www.viruscomix.com/rss.xml' do |item|
+  get(item.link) =~ /="([^"]+?\.jpg)"/
+  comic $1, item.pubDate, item.title
+end

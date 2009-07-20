@@ -2,24 +2,9 @@
 #import "ComicBookGuy.h"
 #import "NSString+mxcl.h"
 #import "comic.h"
-#define NSLog(format, ...)
+//#define NSLog(format, ...)
 
 @implementation PaperBoy
-
--(id)initWithName:(NSString*)_name shellCommand:(NSString*)cmd
-{
-    self = [super init];
-    name = [_name retain];
-    pipe = popen([cmd UTF8String], "r+");
-    data = [[NSMutableData alloc] initWithCapacity:0];
-    return self;
-}
-
--(void)setConnection:(NSURLConnection*)connection
-{
-    http = connection;
-    [http retain];
-}
 
 -(NSString*)fgetns
 {   
@@ -30,9 +15,30 @@
     return [[NSString stringWithUTF8String:buf] strip];
 }
 
--(NSString*)name
+-(id)initWithName:(NSString*)myid shellCommand:(NSString*)cmd
 {
-    return name;
+    NSLog(cmd);
+    
+    self = [super init];
+    identifier = [myid retain];
+    pipe = popen([cmd UTF8String], "r+");
+    name = [[self fgetns] retain];
+    genre = [[self fgetns] retain];
+    data = [[NSMutableData alloc] initWithCapacity:0];
+    enabled = true;
+
+    return self;
+}
+
+-(void)setConnection:(NSURLConnection*)connection
+{
+    http = connection;
+    [http retain];
+}
+
+-(NSString*)id
+{
+    return identifier;
 }
 
 -(NSURLConnection*)connection
@@ -43,6 +49,11 @@
 -(NSMutableData*)data
 {
     return data;
+}
+
+-(NSString*)name
+{
+    return name;
 }
 
 -(FILE*)pipe
@@ -64,12 +75,12 @@ static PaperBoy* find_boy(NSArray* boys, NSURLConnection* http)
 @implementation ComicBookGuy
 
 -(void)gets:(PaperBoy*)boy
-{
+{   
     for(;;){
         NSString* s = [boy fgetns];
         if(!s){
-            [boys removeObject:boy];
-            if([boys count] == 0)
+            [fetching removeObject:boy];
+            if([fetching count] == 0)
                 [delegate performSelector:@selector(deliveriesComplete) withObject:nil];
             break;
         }
@@ -79,38 +90,17 @@ static PaperBoy* find_boy(NSArray* boys, NSURLConnection* http)
 #define _(x) [ext isEqualToString:x]
         if(_(@"png") || _(@"jpg") || _(@"jpeg") || _(@"gif")){
 #undef _
-            
-#if __DEBUG__
-            //TODO set these once in the boy object!
-            time_t last_time = time(0);
-            struct tm* tm = localtime(&last_time);
-            tm->tm_sec = 0;
-            tm->tm_min = 0;
-            tm->tm_hour = 0;
-            tm->tm_mday -= 2;
-            last_time = mktime(tm);
-#else
-            time_t last_time = [[[NSUserDefaults standardUserDefaults] objectForKey:[boy name]] unsignedIntValue];
-#endif
-            time_t time = [[boy fgetns] integerValue];
-            
-            NSLog(@"td of %d for %@ for %@", last_time-time, url, [boy name]);
-            
-            NSString* title = [boy fgetns];
-            
-            if(last_time < time){
-                comic_t* comic = malloc(sizeof(comic_t));
-                comic->url = [url retain];
-                comic->title = [title retain];
-                comic->utc = time;
-                comic->ident = [[boy name] retain];
-                comic->www = nil;
-                comic->image = nil;
-                NSLog(@"Got comic! %@ for %@", url, [boy name]);
-                [delegate delivery:comic];
-            }
+            comic_t* comic = malloc(sizeof(comic_t));
+            comic->url = [url retain];
+            comic->utc = [[boy fgetns] integerValue];
+            comic->title = [[boy fgetns] retain];
+            comic->ident = [[boy id] retain];
+            comic->www = nil;
+            comic->image = nil;
+            NSLog(@"Got comic! %@ for %@", url, [boy id]);
+            [delegate delivery:comic];
         }else{
-            NSLog(@"Requesting %@ for %@", url, [boy name]);
+            NSLog(@"Requesting %@ for %@", url, [boy id]);
             [boy setConnection:[NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url]
                                                              delegate:self]];
             break;
@@ -122,29 +112,55 @@ static inline NSArray* scripts(NSString* path)
 {
     NSArray* files = [[NSFileManager defaultManager] directoryContentsAtPath:path];
     NSMutableArray* scripts = [NSMutableArray arrayWithCapacity:[files count]];
-    for(NSString* fn in files)
-        if(![fn isEqualToString:@"threepanes.rb"])
+    for (NSString* fn in files)
+        if (![fn isEqualToString:@"threepanes.rb"] && ![fn isEqualToString:@"template.rb"])
             [scripts addObject:[fn lastPathComponent]];
     return scripts;
 }
 
 -(id)initWithDelegate:(id)_delegate
-{
+{    
     self = [super init];
     delegate = _delegate;
     
     boys = [[NSMutableArray alloc] initWithCapacity:10];
+    fetching = [[NSMutableArray alloc] initWithCapacity:10];
     
+#if __DEBUG__
+    time_t last_time = time(0);
+    struct tm* tm = localtime(&last_time);
+    tm->tm_sec = 0;
+    tm->tm_min = 0;
+    tm->tm_hour = 0;
+    tm->tm_mday -= 2;
+    last_time = mktime(tm);
+#endif   
+
     NSString* resources = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"rb"];
-    NSString* command = [NSString stringWithFormat:@"ruby -I'%@' '%@/'", resources, resources];
+    NSString* command = [NSString stringWithFormat:@"ruby -I'%@' '%@/%%@' %%u", resources, resources];
     
     for(NSString* scriptname in scripts(resources))
     {
+//    #ifndef __DEBUG__
+        NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:scriptname];
+        NSDate* date = [dict objectForKey:MBLastViewedComic];
+        uint32_t last_time = (uint32_t)[date timeIntervalSince1970];
+//    #endif
+        
         PaperBoy* boy = [[PaperBoy alloc] initWithName:scriptname
-                                          shellCommand:[command stringByAppendingString:scriptname]];
+                                          shellCommand:[NSString stringWithFormat:command, scriptname, last_time]];
         [boys addObject:boy];
-        [self gets:boy];
+
+        NSNumber* active = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:scriptname] objectForKey:MBComicEnabled];
+        if ([active boolValue]){
+            [fetching addObject:boy];
+            [self gets:boy];
+        }
     }
+    
+    if([fetching count] == 0)
+        [delegate performSelector:@selector(deliveriesComplete)];
+    
     return self;
 }
 
@@ -158,21 +174,21 @@ static inline NSArray* scripts(NSString* path)
     }
 }
 
-//–(void)connection:willCacheResponse:
+//-(void)connection:willCacheResponse:
 
 -(void)connection:(NSURLConnection*)http didReceiveData:(NSData*)data
 {
     [[find_boy(boys, http) data] appendData:data];    
 }
 
-//–(void)connection:willSendRequest:redirectResponse:
-//–(void)connection:didFailWithError:
+//TODO -(void)connection:willSendRequest:redirectResponse:
+//TODO -(void)connection:didFailWithError:
 -(void)connectionDidFinishLoading:(NSURLConnection*)http
 {
     PaperBoy* boy = find_boy(boys, http);
     uint32_t const n = [[boy data] length];
     
-    NSLog(@"HTTP GOT %d bytes for %@", n, [boy name]);
+    NSLog(@"HTTP GOT %d bytes for %@", n, [boy id]);
     
     // first write the size of the data in network-byte-order
     uint32_t size_of_index = htonl(n);
@@ -184,6 +200,40 @@ static inline NSArray* scripts(NSString* path)
     [http release];
     
     [self gets:boy];
+}
+
+-(NSInteger)numberOfRowsInTableView:(NSTableView*)view
+{
+    return [boys count];
+}
+
+-(id)tableView:(NSTableView*)view objectValueForTableColumn:(NSTableColumn*)col row:(NSInteger)row
+{
+    PaperBoy* boy = [boys objectAtIndex:row];
+    
+    if([col.identifier isEqualToString:@"enabled"]){
+        [[col dataCellForRow:row] setTitle:boy.name];
+        int state = [[[[NSUserDefaults standardUserDefaults] dictionaryForKey:boy.id] objectForKey:MBComicEnabled] boolValue];
+        return [NSNumber numberWithInteger:state];
+    }
+    else 
+        return [boy valueForKey:col.identifier];
+}
+
+
+-(void)tableView:(NSTableView*)view setObjectValue:(id)o forTableColumn:(NSTableColumn*)col row:(NSInteger)row
+{
+    if(![[col identifier] isEqualToString:@"enabled"])return;
+
+    PaperBoy* boy = [boys objectAtIndex:row];
+    
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary* dict = [[defaults dictionaryForKey:boy.id] mutableCopy];
+    if (!dict) dict = [[NSMutableDictionary alloc] init];
+    [dict setObject:o forKey:MBComicEnabled];
+    [defaults setObject:dict forKey:boy.id];
+    [defaults synchronize];
+    [dict release];
 }
 
 @end

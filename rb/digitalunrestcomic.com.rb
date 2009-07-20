@@ -1,14 +1,12 @@
 # Copyright 2009 Max Howell
 require 'threepanes'
-exit
-data=get 'http://www.rsspect.com/rss/digitalunrest.xml'
-rss=RSS::Parser.parse data, false
 
-rss.items.reverse.each do |item|
-  year=item.pubDate.year
-  month=item.pubDate.month.to_s.rjust 2, '0'
-  day=item.pubDate.mday.to_s.rjust 2, '0'
-  comic "http://www.digitalunrestcomic.com/strips/#{year}-#{month}-#{day}.jpg", 
-        item.pubDate,
-        item.title.gsub(/<\/?b>/, '')
+puts "Digital Unrest"
+puts "Gamer"
+
+get('http://www.digitalunrestcomic.com/archive.php').scan /index\.php\?date=((\d\d\d\d)-(\d\d)-(\d\d))/ do
+  time=Time.mktime $2, $3, $4, 0, 0, 0, 0
+  comic "http://www.digitalunrestcomic.com/strips/#{$1}.jpg",
+        time,
+        $1 if time > $previous
 end

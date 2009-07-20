@@ -5,6 +5,7 @@
   * is mostly asyncronous */
 @interface ComicBookGuy:NSObject{
     NSMutableArray* boys;
+    NSMutableArray* fetching;
     NSObject* delegate;
 }
 -(id)initWithDelegate:(id)delegate;
@@ -13,8 +14,13 @@
 
 @interface PaperBoy:NSObject{
     NSString* name;
+    NSString* identifier;
     FILE* pipe;
     NSURLConnection* http;
     NSMutableData* data;
+    
+    NSImage* favicon;
+    NSString* genre;
+    bool enabled;
 }
 @end

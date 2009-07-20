@@ -1,9 +1,9 @@
 require 'threepanes'
 
-data=get 'http://www.joyoftech.com/joyoftech/jotblog/index.xml'
-rss=RSS::Parser.parse data
+puts "Joy of Tech"
+puts "Geek"
 
-rss.items.reverse.each do |item|
+get_rss 'http://www.joyoftech.com/joyoftech/jotblog/index.xml' do |item|
   n=File.basename item.link, '.html'
-  comic "joyoftech/joyimages/#{n}.gif", item.pubDate, item.title
+  comic "joyoftech/joyimages/#{n}.jpg", item.pubDate, item.title
 end

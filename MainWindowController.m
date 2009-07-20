@@ -12,14 +12,13 @@
 {
     all_comics_loaded = false;
     idealframe = [window frame];
-    [[ComicBookGuy alloc] performSelector:@selector(initWithDelegate:) 
-                               withObject:self
-                               afterDelay:0];
+    [guy performSelector:@selector(initWithDelegate:) 
+              withObject:self
+              afterDelay:0];
     [spinner startAnimation:self];
     [self performSelector:@selector(windowDidMove:) withObject:nil];
     [scrollview setVerticalLineScroll:70];
     [window center];
-
 }
 
 -(void)updateDockBadge
@@ -32,7 +31,7 @@
 -(void)delivery:(comic_t*)comic
 {
     [label setStringValue:@"No more comics today :("];    
-    //TODO disable next action until now!
+    [next setEnabled:true];    
     [comcon addComic:comic];
     [self updateDockBadge];
 }
@@ -187,7 +186,7 @@ static bool show_scroller = false;
             [self scrollLineDown:nil];
             break;
         case 0x0020: // space key
-            [self scrollPageDown:nil];
+            [self pageDown:nil];
             break;
         default:
             [super keyDown:event];

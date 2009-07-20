@@ -1,10 +1,10 @@
 # Copyright 2009 Max Howell
 require 'threepanes'
 
-data=get 'http://fanboys-online.com/rss/comic.xml'
-rss=RSS::Parser.parse data, false
+puts "F@NB0Y$"
+puts "Gamer"
 
-rss.items.reverse.each do |item|
+get_rss 'http://fanboys-online.com/rss/comic.xml' do |item|
   item.description =~ %r[src="http://fanboys-online.com/thumbs/(\d\d\d\d\d\d\d\d\.jpg)"]
   comic "comics/#{$1}", item.pubDate, item.title
 end

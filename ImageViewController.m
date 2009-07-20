@@ -57,8 +57,13 @@ static void inline updateStoredTimestamp(comic_t* comic)
     if(time > now+7*24*60*60)
         time = now;
     
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithUnsignedInt:time]
-                                              forKey:comic->ident];
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableDictionary* dict = [[defaults dictionaryForKey:comic->ident] mutableCopy];
+    if (!dict) dict = [[NSMutableDictionary alloc] init];
+    [dict setObject:[NSDate dateWithTimeIntervalSince1970:time] forKey:MBLastViewedComic];
+    [defaults setObject:dict forKey:comic->ident];
+    [defaults synchronize];
+    [dict release];
 }
 
 -(void)setComic:(comic_t*)comic

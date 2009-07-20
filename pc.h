@@ -5,3 +5,6 @@
 #endif
 
 typedef struct comic comic_t;
+
+#define MBLastViewedComic @"LastViewedComic"
+#define MBComicEnabled @"Enabled"

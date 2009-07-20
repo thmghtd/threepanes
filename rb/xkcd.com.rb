@@ -1,10 +1,10 @@
 # Copyright 2009 Max Howell
 require 'threepanes'
 
-data=get 'http://xkcd.com/rss.xml'
-rss=RSS::Parser.parse data, false
+puts "xkcd"
+puts "Geek"
 
-rss.items.reverse.each do |item|
+get_rss 'http://xkcd.com/rss.xml' do |item|
   item.description =~ /src="(.*?)"/
   comic $1, item.pubDate, item.title
 end
