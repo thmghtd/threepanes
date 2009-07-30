@@ -137,7 +137,7 @@ static inline NSArray* scripts(NSString* path)
 #endif   
 
     NSString* resources = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"rb"];
-    NSString* command = [NSString stringWithFormat:@"ruby -I'%@' '%@/%%@' %%u", resources, resources];
+    NSString* command = [NSString stringWithFormat:@"ruby -I'%@' '%1$@/%%@' %%u", resources];
     
     for(NSString* scriptname in scripts(resources))
     {
