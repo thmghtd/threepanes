@@ -36,7 +36,8 @@ if $0 != __FILE__  # This is the path when executed inside Three Panes.app
 
   def get_rss url
     $stderr.puts $previous
-    items=RSS::Parser.parse(get(url), false).items.select{|item| item.pubDate > $previous }.reverse
+    #TODO you must sort these, don't depend on RSS typical order!
+    items=RSS::Parser.parse(get(url), false).items.select{|item| item.pubDate > $previous}.reverse
     items.each {|item| yield item}
     return items
   end
