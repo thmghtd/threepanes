@@ -5,6 +5,6 @@ puts "Buttersafe"
 puts "Surreal"
 
 get_rss 'http://feeds.feedburner.com/Buttersafe' do |item|
-  get(item.link) =~ %r[src='((http://(www\.)?buttersafe.com)?/comics/\d\d\d\d-\d\d-\d\d-.*?\.jpg)']
+  get(item.link) =~ %r[buttersafe.com/(comics/\d\d\d\d-\d\d-\d\d-.*?\.jpg)]
   comic $1, item.pubDate, item.title
 end
