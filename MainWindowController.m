@@ -1,6 +1,6 @@
 // Copyright 2009 Max Howell
 #import "MainWindowController.h"
-#import "ComicBookGuy.h"
+#import "PaperBoy.h"
 #import "ImageViewController.h"
 #import "comic.h"
 #import <stdio.h>
@@ -28,7 +28,7 @@
                                       : @""];
 }
 
--(void)delivery:(comic_t*)comic
+-(void)delivery:(Comic*)comic
 {
     [label setStringValue:@"No more comics today :("];    
     [next setEnabled:true];    
@@ -88,17 +88,22 @@ static bool show_scroller = false;
     return r;
 }
 
--(void)onComicChanged:(comic_t*)comic
+-(void)onComicFailure:(Comic*)comic type:(int)failure_type
 {
-    NSLog(@"Comic changed to: %@", comic ? comic->url : nil);
+    NSLog(@"%@ failed", comic.url);
+}
+
+-(void)onComicChanged:(Comic*)comic
+{
+    NSLog(@"Comic changed to: %@", comic ? comic.url : nil);
     
     [spinner stopAnimation:self];
     
     if(comic){
-        [window setTitle:comic->title];
+        [window setTitle:comic.title];
 
         //TODO center in screen, or center about its current position
-        idealframe = [self idealFrameForComicOfSize:comic->size];
+        idealframe = [self idealFrameForComicOfSize:comic.size];
 
         [scrollview setHasVerticalScroller:show_scroller];
         id cv = [scrollview contentView];

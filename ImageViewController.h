@@ -1,20 +1,27 @@
 // Copyright 2009 Max Howell
 #import <Cocoa/Cocoa.h>
 
+/* The image view controller shows the latest comic.
+ * It also has a next action that loads the next comic and reports to a delegate
+ * when that comic is being displayed.
+ * It also updates the persistent store to reflect which comics have been viewed
+ * by the user
+ */
+
 @interface ImageViewController:NSObject{
-    NSPointerArray* comics;
     NSURLConnection* http;
     NSMutableData* data;
-    comic_t* active;
     IBOutlet id delegate;
     IBOutlet NSImageView* view;
     
-    bool dodelegate;
-    bool waiting_for_next;
+    bool set_comic_when_loaded;
+
+    NSMutableArray* comics;
+    Comic* loading;
 }
 
 -(bool)next;
--(void)addComic:(comic_t*)comic;
+-(void)addComic:(Comic*)comic;
 -(NSUInteger)count;
 
 @end

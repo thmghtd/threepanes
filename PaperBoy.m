@@ -1,13 +1,23 @@
 // Copyright 2009 Max Howell
-#import "ComicBookGuy.h"
+#import "PaperBoy.h"
 #import "NSString+mxcl.h"
 #import "comic.h"
 //#define NSLog(format, ...)
 
-@implementation PaperBoy
+@implementation Comic
+@synthesize image;
+@synthesize title;
+@synthesize utc;
+@synthesize url;
+@synthesize ident;
+@synthesize size;
+@end
+
+
+@implementation PublishingHouse
 
 -(NSString*)fgetns
-{   
+{
     // http://support.microsoft.com/kb/q208427/
     // http://www.boutell.com/newfaq/misc/urllength.html
     char buf[2084];
@@ -30,51 +40,27 @@
     return self;
 }
 
--(void)setConnection:(NSURLConnection*)connection
-{
-    http = connection;
-    [http retain];
-}
+@synthesize http;
+@synthesize data;
+@synthesize name;
+@synthesize pipe;
+@synthesize identifier;
 
--(NSString*)id
-{
-    return identifier;
-}
-
--(NSURLConnection*)connection
-{
-    return http;
-}
-
--(NSMutableData*)data
-{
-    return data;
-}
-
--(NSString*)name
-{
-    return name;
-}
-
--(FILE*)pipe
-{
-    return pipe;
-}
 @end
 
 
-static PaperBoy* find_boy(NSArray* boys, NSURLConnection* http)
+static PublishingHouse* find_house(NSArray* houses, NSURLConnection* http)
 {
-    for(PaperBoy* boy in boys)
-        if([boy connection] == http)
-            return boy;
+    for(PublishingHouse* h in houses)
+        if(h.http == http)
+            return h;
     return nil;
 }
 
 
-@implementation ComicBookGuy
+@implementation PaperBoy
 
--(void)gets:(PaperBoy*)boy
+-(void)gets:(PublishingHouse*)boy
 {   
     for(;;){
         NSString* s = [boy fgetns];
@@ -90,19 +76,18 @@ static PaperBoy* find_boy(NSArray* boys, NSURLConnection* http)
 #define _(x) [ext isEqualToString:x]
         if(_(@"png") || _(@"jpg") || _(@"jpeg") || _(@"gif")){
 #undef _
-            comic_t* comic = malloc(sizeof(comic_t));
-            comic->url = [url retain];
-            comic->utc = [[boy fgetns] integerValue];
-            comic->title = [[boy fgetns] retain];
-            comic->ident = [[boy id] retain];
-            comic->www = nil;
-            comic->image = nil;
-            NSLog(@"Got comic! %@ for %@", url, [boy id]);
-            [delegate delivery:comic];
+            Comic* comic = [[Comic alloc] init];
+            comic.url=url;
+            comic.utc=[[boy fgetns] integerValue];
+            comic.title=[boy fgetns];
+            comic.ident=[boy identifier];
+
+            NSLog(@"Got comic! %@ for %@", url, [boy identifier]);
+            [delegate performSelector:@selector(delivery:) withObject:comic];
         }else{
-            NSLog(@"Requesting %@ for %@", url, [boy id]);
-            [boy setConnection:[NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url]
-                                                             delegate:self]];
+            NSLog(@"Requesting %@ for %@", url, [boy identifier]);
+            boy.http = [[NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url]
+                                                     delegate:self] retain];
             break;
         }
     }
@@ -119,11 +104,11 @@ static inline NSArray* scripts(NSString* path)
 }
 
 -(id)initWithDelegate:(id)_delegate
-{    
+{
     self = [super init];
     delegate = _delegate;
     
-    boys = [[NSMutableArray alloc] initWithCapacity:10];
+    houses = [[NSMutableArray alloc] initWithCapacity:10];
     fetching = [[NSMutableArray alloc] initWithCapacity:10];
     
 #if __DEBUG__
@@ -136,29 +121,32 @@ static inline NSArray* scripts(NSString* path)
     last_time = mktime(tm);
 #endif   
 
-    NSString* resources = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"rb"];
-    NSString* command = [NSString stringWithFormat:@"ruby -I'%@' '%1$@/%%@' %%u", resources];
+    NSString* rb_dir = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"rb"];
     
-    for(NSString* scriptname in scripts(resources))
+    // this way we don't have to escape any paths passed to popen
+    chdir([rb_dir UTF8String]);
+      
+    for(NSString* scriptname in scripts(rb_dir))
     {
-//    #ifndef __DEBUG__
+    #ifndef __DEBUG__
         NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:scriptname];
         NSDate* date = [dict objectForKey:MBLastViewedComic];
         uint32_t last_time = (uint32_t)[date timeIntervalSince1970];
-//    #endif
+    #endif
         
-        PaperBoy* boy = [[PaperBoy alloc] initWithName:scriptname
-                                          shellCommand:[NSString stringWithFormat:command, scriptname, last_time]];
-        [boys addObject:boy];
+        PublishingHouse* house = [[PublishingHouse alloc] initWithName:scriptname
+                                                          shellCommand:[NSString stringWithFormat:@"ruby '%@' %u", scriptname, last_time]];
+        [houses addObject:house];
 
-        NSNumber* active = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:scriptname] objectForKey:MBComicEnabled];
-        if ([active boolValue]){
-            [fetching addObject:boy];
-            [self gets:boy];
+        bool is_active = [[[[NSUserDefaults standardUserDefaults] dictionaryForKey:scriptname] objectForKey:MBComicEnabled] boolValue];
+        if(is_active){
+            [fetching addObject:house];
+            // the delay allows the event loop to run a little
+            [self gets:house];
         }
     }
     
-    if([fetching count] == 0)
+    if(fetching.count == 0)
         [delegate performSelector:@selector(deliveriesComplete)];
     
     return self;
@@ -166,9 +154,9 @@ static inline NSArray* scripts(NSString* path)
 
 -(void)connection:(NSURLConnection*)http didReceiveResponse:(NSHTTPURLResponse*)response
 {
-    [[find_boy(boys, http) data] setLength:0];
+    [[find_house(houses, http) data] setLength:0];
     
-    if([response statusCode] == 404){
+    if(response.statusCode == 404){
         [http cancel];
         [self connectionDidFinishLoading:http];
     }
@@ -178,17 +166,17 @@ static inline NSArray* scripts(NSString* path)
 
 -(void)connection:(NSURLConnection*)http didReceiveData:(NSData*)data
 {
-    [[find_boy(boys, http) data] appendData:data];    
+    [[find_house(houses, http) data] appendData:data];    
 }
 
 //TODO -(void)connection:willSendRequest:redirectResponse:
 //TODO -(void)connection:didFailWithError:
 -(void)connectionDidFinishLoading:(NSURLConnection*)http
 {
-    PaperBoy* boy = find_boy(boys, http);
+    PublishingHouse* boy = find_house(houses, http);
     uint32_t const n = [[boy data] length];
     
-    NSLog(@"HTTP GOT %d bytes for %@", n, [boy id]);
+    NSLog(@"HTTP GOT %d bytes for %@", n, [boy identifier]);
     
     // first write the size of the data in network-byte-order
     uint32_t size_of_index = htonl(n);
@@ -204,16 +192,16 @@ static inline NSArray* scripts(NSString* path)
 
 -(NSInteger)numberOfRowsInTableView:(NSTableView*)view
 {
-    return [boys count];
+    return [houses count];
 }
 
 -(id)tableView:(NSTableView*)view objectValueForTableColumn:(NSTableColumn*)col row:(NSInteger)row
 {
-    PaperBoy* boy = [boys objectAtIndex:row];
+    PublishingHouse* boy = [houses objectAtIndex:row];
     
     if([col.identifier isEqualToString:@"enabled"]){
         [[col dataCellForRow:row] setTitle:boy.name];
-        int state = [[[[NSUserDefaults standardUserDefaults] dictionaryForKey:boy.id] objectForKey:MBComicEnabled] boolValue];
+        int state = [[[[NSUserDefaults standardUserDefaults] dictionaryForKey:boy.identifier] objectForKey:MBComicEnabled] boolValue];
         return [NSNumber numberWithInteger:state];
     }
     else 
@@ -225,13 +213,13 @@ static inline NSArray* scripts(NSString* path)
 {
     if(![[col identifier] isEqualToString:@"enabled"])return;
 
-    PaperBoy* boy = [boys objectAtIndex:row];
+    PublishingHouse* boy = [houses objectAtIndex:row];
     
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary* dict = [[defaults dictionaryForKey:boy.id] mutableCopy];
+    NSMutableDictionary* dict = [[defaults dictionaryForKey:boy.identifier] mutableCopy];
     if (!dict) dict = [[NSMutableDictionary alloc] init];
     [dict setObject:o forKey:MBComicEnabled];
-    [defaults setObject:dict forKey:boy.id];
+    [defaults setObject:dict forKey:boy.identifier];
     [defaults synchronize];
     [dict release];
 }

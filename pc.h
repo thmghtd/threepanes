@@ -4,7 +4,7 @@
     #import <Cocoa/Cocoa.h>
 #endif
 
-typedef struct comic comic_t;
+@class Comic;
 
 #define MBLastViewedComic @"LastViewedComic"
 #define MBComicEnabled @"Enabled"

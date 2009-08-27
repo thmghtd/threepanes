@@ -14,7 +14,7 @@
 		63A5445D0FF2827D008C35B1 /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = 63A5445C0FF2827D008C35B1 /* Credits.html */; };
 		63A545A40FF3C65B008C35B1 /* threepanes.icns in Resources */ = {isa = PBXBuildFile; fileRef = 63A545A30FF3C65B008C35B1 /* threepanes.icns */; };
 		63D04EF60FF11F4E00FDE21D /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D04EF50FF11F4E00FDE21D /* ImageViewController.m */; };
-		63D651CA0FEAC3AB0085AC80 /* ComicBookGuy.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D651C90FEAC3AB0085AC80 /* ComicBookGuy.m */; };
+		63D651CA0FEAC3AB0085AC80 /* PaperBoy.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D651C90FEAC3AB0085AC80 /* PaperBoy.m */; };
 		63EE256B0FE7CB8C00747962 /* NSString+mxcl.m in Sources */ = {isa = PBXBuildFile; fileRef = 63EE256A0FE7CB8C00747962 /* NSString+mxcl.m */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -37,8 +37,8 @@
 		63A545A30FF3C65B008C35B1 /* threepanes.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = threepanes.icns; sourceTree = "<group>"; };
 		63D04EF40FF11F4E00FDE21D /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
 		63D04EF50FF11F4E00FDE21D /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
-		63D651C80FEAC3AB0085AC80 /* ComicBookGuy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComicBookGuy.h; sourceTree = "<group>"; };
-		63D651C90FEAC3AB0085AC80 /* ComicBookGuy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComicBookGuy.m; sourceTree = "<group>"; };
+		63D651C80FEAC3AB0085AC80 /* PaperBoy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaperBoy.h; sourceTree = "<group>"; };
+		63D651C90FEAC3AB0085AC80 /* PaperBoy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaperBoy.m; sourceTree = "<group>"; };
 		63EE25690FE7CB8C00747962 /* NSString+mxcl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+mxcl.h"; sourceTree = "<group>"; };
 		63EE256A0FE7CB8C00747962 /* NSString+mxcl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+mxcl.m"; sourceTree = "<group>"; };
 		63FBB1EA0FF1562B005E7D4B /* comic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = comic.h; sourceTree = "<group>"; };
@@ -69,8 +69,8 @@
 				630405E80F3733A20058E192 /* MainWindowController.m */,
 				63EE25690FE7CB8C00747962 /* NSString+mxcl.h */,
 				63EE256A0FE7CB8C00747962 /* NSString+mxcl.m */,
-				63D651C80FEAC3AB0085AC80 /* ComicBookGuy.h */,
-				63D651C90FEAC3AB0085AC80 /* ComicBookGuy.m */,
+				63D651C80FEAC3AB0085AC80 /* PaperBoy.h */,
+				63D651C90FEAC3AB0085AC80 /* PaperBoy.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -222,7 +222,7 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				630405E90F3733A20058E192 /* MainWindowController.m in Sources */,
 				63EE256B0FE7CB8C00747962 /* NSString+mxcl.m in Sources */,
-				63D651CA0FEAC3AB0085AC80 /* ComicBookGuy.m in Sources */,
+				63D651CA0FEAC3AB0085AC80 /* PaperBoy.m in Sources */,
 				63D04EF60FF11F4E00FDE21D /* ImageViewController.m in Sources */,
 				63669DC40FFCEFCA005832BC /* MBImageView.m in Sources */,
 			);

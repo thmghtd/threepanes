@@ -2,161 +2,154 @@
 #import "ImageViewController.h"
 #import "comic.h"
 
+
+
 @implementation ImageViewController
 
 -(void)awakeFromNib
 {
-    dodelegate = true;
-    waiting_for_next = true;
-    comics = [[NSPointerArray alloc] initWithOptions:NSPointerFunctionsOpaqueMemory];
-    data = [[NSMutableData data] retain];
+    set_comic_when_loaded = true;
+    comics = [[NSMutableArray alloc] init];
+    data = [[NSMutableData alloc] init];
 }
 
--(NSURLConnection*)fetch:(comic_t*)comic
+-(NSURLConnection*)fetchNextComic
 {
-    assert([data length] == 0);
+    if(loading)return nil;
+    if(comics.count==0)return nil;
+    
+    assert(data.length == 0);
 
-    NSLog(@"Fetching: %@", comic->url);
-    NSURLRequest* rq = [NSURLRequest requestWithURL:comic->url
+    loading=[comics lastObject];
+    [comics removeLastObject];
+
+    NSURLRequest* rq = [NSURLRequest requestWithURL:loading.url
                                         cachePolicy:NSURLRequestReturnCacheDataElseLoad
                                     timeoutInterval:10];
     return [NSURLConnection connectionWithRequest:rq delegate:self];
 }
 
--(void)addComic:(comic_t*)comic
-{
-    if(waiting_for_next){
-        http = [self fetch:comic];
-        active = comic;
-        waiting_for_next = false;
-    }
-    else if([comics count] == 0){
-        [comics addPointer:comic];
-        if(!active){
-            http = [self fetch:comic];
-            active = comic;
+-(void)addComic:(Comic*)comic
+{     
+    int const N=comics.count;
+    int i=0;
+    for(; i<N; ++i)
+        if(comic.utc < [[comics objectAtIndex:i] utc]){
+            [comics insertObject:comic atIndex:i];
+            break;
         }
-    }
-    else { for(int x = 0; x < [comics count]; ++x){
-        comic_t* b = [comics pointerAtIndex:x];
-        if(comic->utc < b->utc){
-            [comics insertPointer:comic atIndex:x];
-            return;
-        }
-    }
-        [comics addPointer:comic];
-    }
+    if(i==N)
+        [comics addObject:comic];
+
+    if(!loading)
+        [self fetchNextComic];
 }
 
-static void inline updateStoredTimestamp(comic_t* comic)
+static void inline updateStoredTimestamp(Comic* comic)
 {
     time_t now = time(NULL);
-    time_t time = comic->utc;
+    time_t time = comic.utc;
 
     // sanity check the time
     if(time > now+7*24*60*60)
         time = now;
     
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-    NSMutableDictionary* dict = [[defaults dictionaryForKey:comic->ident] mutableCopy];
+    NSMutableDictionary* dict = [[defaults dictionaryForKey:comic.ident] mutableCopy];
     if (!dict) dict = [[NSMutableDictionary alloc] init];
     [dict setObject:[NSDate dateWithTimeIntervalSince1970:time] forKey:MBLastViewedComic];
-    [defaults setObject:dict forKey:comic->ident];
+    [defaults setObject:dict forKey:comic.ident];
     [defaults synchronize];
     [dict release];
 }
 
--(void)setComic:(comic_t*)comic
+-(void)setComic:(Comic*)comic
 {
     @try{
-        NSImageRep* rep = comic->image;
+        NSImageRep* rep = comic.image;
         if(!rep)
-            [NSException raise:@"Null image" format:@"For comic: %@", comic->url];
+            [NSException raise:@"Null image" format:@"For comic: %@", comic.url];
 
         // some comics (eg cad-comic) save their images with a stupid DPI
         // settings (ie. 180dpi of all things), and NSImage blindly obeys, so
         // we have to override it with this convuluted method
-        comic->size = NSMakeSize([rep pixelsWide], [rep pixelsHigh]);
+        comic.size = NSMakeSize(rep.pixelsWide, rep.pixelsHigh);
         
         NSImage* img = [[[NSImage alloc] init] autorelease];
         [img addRepresentation:rep];
-        [img setSize:comic->size];
-        [view setImage:img];
+        img.size = comic.size;
+        view.image = img;
         
         updateStoredTimestamp(comic);
-        [delegate onComicChanged:comic];
-        dodelegate = false;
+        [delegate performSelector:@selector(onComicChanged:) withObject:comic];
 
-        if([comics count]){
-            comic_t* nextcomic = [comics pointerAtIndex:0];
-            http = [self fetch:nextcomic];
-            active = nextcomic;
-        }
+        set_comic_when_loaded = false;
+        [self fetchNextComic];
     }
     @catch(NSException* e){
-        //TODO log exception
-        NSLog(@"Load failure for %@, %@", comic->ident, comic->url);
+        //TODO show error to user
+        NSLog(@"Load failure for %@, %@", comic.ident, comic.url);
         [self next];
     }
 }
 
+// return true if loading
 -(bool)next
 {
-    if(active||http){ // already on it
-        dodelegate = true;
+    set_comic_when_loaded = true;
+    
+    if(loading)
         return true;
-    }
-    if([comics count] == 0){
-        [delegate onComicChanged:NULL];
-        waiting_for_next = true;
-        dodelegate = true;
+
+    if(comics.count == 0){
+        [delegate performSelector:@selector(onComicChanged:) withObject:nil];
         return false;
     }
 
-    comic_t* comic = [comics pointerAtIndex:0];
-    if(comic->image){
-        // we already downloaded it
-        [comics removePointerAtIndex:0];
-        dodelegate = true;
+    Comic* comic = [comics lastObject];
+
+    if(comic.image){
+        [comics removeLastObject];
         [self setComic:comic];
         return false; //don't show spinner
     }else{
-        http = [self fetch:comic];
-        active = comic;
-        dodelegate = true;
+        set_comic_when_loaded = true;
+        [self fetchNextComic];
         return true;
     }
 }
 
+//TODO we must allow this http stuff to work at start, peformselectors after small delay to allow event loop to do its thing
 -(void)connection:(NSURLConnection*)connection didReceiveData:(NSData*)newdata
 {
-    if(connection == http)
-        [data appendData:newdata];
+    [data appendData:newdata];
+}
+
+-(void)connection:(NSURLConnection*) didFailWithError:(NSError*)e
+{
+    //TODO better
+    // eg store error in comic object and then show that to delegate when asked for
+    
+    [NSAlert alertWithError:e];
+    loading = nil;
+    [self next];
 }
 
 -(void)connectionDidFinishLoading:(NSURLConnection*)connection
 {
-    if(connection == http){
-        NSLog(@"Fetched: %@", active->url);
-        
-        comic_t* comic = active;
-        active = nil;
-        http = nil;
+    Comic*comic=loading;
+    loading = nil;
 
-        comic->image = [[[NSImageRep imageRepClassForData:data] imageRepWithData:data] retain];
-        [data setLength:0];
-        
-        if(dodelegate){
-            if([comics count])
-                [comics removePointerAtIndex:0]; //FIXME lol
-            [self setComic:comic];
-        }
-    }
+    comic.image = [[NSImageRep imageRepClassForData:data] imageRepWithData:data];
+    data.length = 0;
+    
+    if(set_comic_when_loaded)
+        [self setComic:comic];
 }
 
 -(NSUInteger)count
 {
-    return [comics count];
+    return comics.count+(loading?1:0);
 }
 
 @end

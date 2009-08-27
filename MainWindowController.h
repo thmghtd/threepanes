@@ -1,7 +1,7 @@
 // Copyright 2009 Max Howell
 #import <Cocoa/Cocoa.h>
 @class ImageViewController;
-@class ComicBookGuy;
+@class PaperBoy;
 
 
 @interface MainWindowController:NSObject
@@ -14,14 +14,14 @@
     IBOutlet NSImageView* view;
     IBOutlet NSMenuItem* prev;
     IBOutlet NSMenuItem* next;
-    IBOutlet ComicBookGuy* guy;
+    IBOutlet PaperBoy* guy;
     
-    NSRect idealframe;  
+    NSRect idealframe;
     NSPoint anchor; /** the main window centers about this */
     bool all_comics_loaded;
 }
 
--(void)onComicChanged:(comic_t*)comic;
+-(void)onComicChanged:(Comic*)comic;
 -(IBAction)next:(id)sender;
 
 @end
