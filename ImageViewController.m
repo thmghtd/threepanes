@@ -73,7 +73,7 @@ static void inline updateStoredTimestamp(Comic* comic)
 
         // some comics (eg cad-comic) save their images with a stupid DPI
         // settings (ie. 180dpi of all things), and NSImage blindly obeys, so
-        // we have to override it with this convuluted method
+        // we have to override it with this convoluted method
         comic.size = NSMakeSize(rep.pixelsWide, rep.pixelsHigh);
         
         NSImage* img = [[[NSImage alloc] init] autorelease];
@@ -89,7 +89,7 @@ static void inline updateStoredTimestamp(Comic* comic)
     }
     @catch(NSException* e){
         //TODO show error to user
-        NSLog(@"Load failure for %@, %@", comic.ident, comic.url);
+        NSLog(@"[UI] Load failure for %@, %@", comic.ident, comic.url);
         [self next];
     }
 }

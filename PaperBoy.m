@@ -27,7 +27,7 @@
 
 -(id)initWithName:(NSString*)myid shellCommand:(NSString*)cmd
 {
-    NSLog(cmd);
+    NSLog(@"[PB] exec: %@", cmd);
     
     self = [super init];
     identifier = [myid retain];
@@ -82,10 +82,10 @@ static PublishingHouse* find_house(NSArray* houses, NSURLConnection* http)
             comic.title=[boy fgetns];
             comic.ident=[boy identifier];
 
-            NSLog(@"Got comic! %@ for %@", url, [boy identifier]);
+            NSLog(@"[PB] OHAI: %@", url);
             [delegate performSelector:@selector(delivery:) withObject:comic];
         }else{
-            NSLog(@"Requesting %@ for %@", url, [boy identifier]);
+            NSLog(@"[PB] HTTP GET %@", url);
             boy.http = [[NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url]
                                                      delegate:self] retain];
             break;
@@ -175,8 +175,6 @@ static inline NSArray* scripts(NSString* path)
 {
     PublishingHouse* boy = find_house(houses, http);
     uint32_t const n = [[boy data] length];
-    
-    NSLog(@"HTTP GOT %d bytes for %@", n, [boy identifier]);
     
     // first write the size of the data in network-byte-order
     uint32_t size_of_index = htonl(n);

@@ -90,13 +90,11 @@ static bool show_scroller = false;
 
 -(void)onComicFailure:(Comic*)comic type:(int)failure_type
 {
-    NSLog(@"%@ failed", comic.url);
+    NSLog(@"[UI] %@ failed", comic.url);
 }
 
 -(void)onComicChanged:(Comic*)comic
 {
-    NSLog(@"Comic changed to: %@", comic ? comic.url : nil);
-    
     [spinner stopAnimation:self];
     
     if(comic){
@@ -120,6 +118,7 @@ static bool show_scroller = false;
         // if we haven't finished loading then there is a chance a new comic
         // will still arrive, if not we handle that elsewhere
         [spinner startAnimation:self];
+		NSLog(@"[UI] Still loading: %@", comic.url);
     }
     
     //TODO set next action disabled if no comics left
