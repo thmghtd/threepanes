@@ -44,6 +44,8 @@
 
     if(!loading)
         [self fetchNextComic];
+	
+	[delegate performSelector:@selector(onComicCountChanged:) withObject:[NSNumber numberWithInt:comics.count]];
 }
 
 static void inline updateStoredTimestamp(Comic* comic)
@@ -82,8 +84,9 @@ static void inline updateStoredTimestamp(Comic* comic)
         view.image = img;
         
         updateStoredTimestamp(comic);
+		[delegate performSelector:@selector(onComicCountChanged:) withObject:[NSNumber numberWithInt:comics.count]];
         [delegate performSelector:@selector(onComicChanged:) withObject:comic];
-
+		
         set_comic_when_loaded = false;
         [self fetchNextComic];
     }
@@ -152,7 +155,7 @@ static void inline updateStoredTimestamp(Comic* comic)
 
 -(NSUInteger)count
 {
-    return comics.count+(loading?1:0);
+	return comics.count+(loading?1:0);
 }
 
 @end

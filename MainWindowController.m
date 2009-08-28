@@ -21,19 +21,11 @@
     [window center];
 }
 
--(void)updateDockBadge
-{
-    uint n = [comcon count];
-    [[NSApp dockTile] setBadgeLabel:n ? [NSString stringWithFormat: @"%d", n]
-                                      : @""];
-}
-
 -(void)delivery:(Comic*)comic
 {
     [label setStringValue:@"No more comics today :("];    
     [next setEnabled:true];    
     [comcon addComic:comic];
-    [self updateDockBadge];
 }
 
 -(void)deliveriesComplete
@@ -88,6 +80,12 @@ static bool show_scroller = false;
     return r;
 }
 
+-(void)onComicCountChanged:(NSNumber*)count
+{
+	uint n = [count unsignedIntValue];
+    [[NSApp dockTile] setBadgeLabel:n ? [NSString stringWithFormat: @"%d", n] : @""];
+}
+
 -(void)onComicFailure:(Comic*)comic type:(int)failure_type
 {
     NSLog(@"[UI] %@ failed", comic.url);
@@ -108,8 +106,6 @@ static bool show_scroller = false;
         [cv scrollToPoint:NSMakePoint(0,0)];
         [scrollview reflectScrolledClipView:cv];
         [window setFrame:idealframe display:true animate:true];
-
-        [self updateDockBadge];
     }else if(all_comics_loaded){
         [view setHidden:true];
         [label setHidden:false];
