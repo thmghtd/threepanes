@@ -30,22 +30,25 @@
 								  delegate:self];
 }
 
+-(void)insert:(Comic*)comic
+{
+    for(int i=0, N=comics.count; i<N; ++i)
+        if(comic.utc > [[comics objectAtIndex:i] utc]){
+            [comics insertObject:comic atIndex:i];
+            return;
+        }
+    [comics addObject:comic];
+}
+
 -(void)addComic:(Comic*)comic
 {
-    int const N=comics.count;
-    int i=0;
-    for(; i<N; ++i)
-        if(comic.utc < [[comics objectAtIndex:i] utc]){
-            [comics insertObject:comic atIndex:i];
-            break;
-        }
-    if(i==N)
-        [comics addObject:comic];
+    [self insert:comic];
 
     if(!loading)
         [self fetchNextComic];
 	
-	[delegate performSelector:@selector(onComicCountChanged:) withObject:[NSNumber numberWithInt:comics.count]];
+	[delegate performSelector:@selector(onComicCountChanged:) 
+                   withObject:[NSNumber numberWithInt:comics.count]];
 }
 
 static void inline updateStoredTimestamp(Comic* comic)
