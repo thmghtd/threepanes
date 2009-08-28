@@ -7,6 +7,8 @@
     NSMutableArray* fetching;
     NSObject* delegate;
 	NSMutableArray* scripts;
+	
+    IBOutlet NSTableView* tableview;
 }
 -(id)initWithDelegate:(id)delegate;
 @end

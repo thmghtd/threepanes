@@ -124,6 +124,7 @@ static PublishingHouse* find_house(NSArray* houses, NSURLConnection* http)
 	PublishingHouse* house = [[PublishingHouse alloc] initWithName:scriptname
 													  shellCommand:[NSString stringWithFormat:@"ruby '%@' %u", scriptname, last_time]];
 	[houses addObject:house];
+    [tableview reloadData];
 
 	bool is_active = [[[[NSUserDefaults standardUserDefaults] dictionaryForKey:scriptname] objectForKey:MBComicEnabled] boolValue];
 	if(is_active){
