@@ -10,7 +10,6 @@ def twomonthsago
   Time.now-60*60*24*30*2
 end
 
-
 if $0 != __FILE__  # This is the path when executed inside Three Panes.app
 
   $previous=Time.at(ARGV[0].to_i)
@@ -37,7 +36,14 @@ if $0 != __FILE__  # This is the path when executed inside Three Panes.app
   def get_rss url
     $stderr.puts $previous
     #TODO you must sort these, don't depend on RSS typical order!
-    items=RSS::Parser.parse(get(url), false).items.select{|item| item.pubDate > $previous}.reverse
+    items=RSS::Parser.parse(get(url), false).items.select do |item|
+      begin
+        item.pubDate > $previous
+      rescue
+        $stderr.write "Couldn't parse date from #{item.title}"
+        false
+      end
+    end.reverse
     items.each {|item| yield item}
     return items
   end
@@ -112,13 +118,14 @@ else # this is the path executed on the command line
           data=open(url).read
           results=Array.new
           data.scan /([^ ]+\.(jpg|jpeg|png|gif))/i do results<<$1 end
+          IO.popen("mate", "w") {|f| f.write data} if ARGV.include? '--mate'
           unless results.empty? or ARGV.include? '--dumb'
             results.each {|x| puts x}
           end
-          puts data if ARGV.include? '--full'
           exit! if ARGV.include? '-1' and not results.empty?
-        rescue
+        rescue => e
           puts "ERR Couldn't load: #{url}"
+          puts e
         end
         pipe.write [data.length].pack("N*")
         pipe.write data
