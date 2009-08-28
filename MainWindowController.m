@@ -33,11 +33,8 @@
     all_comics_loaded = true;
 
     //TODO count can be 0 currently even though an image is showing :(
-    if(comcon.count == 0 && view.image == nil){
-        [spinner stopAnimation:self];
-        [label setHidden:false];
-        [view setHidden:true];
-    }
+    if(comcon.count == 0 && view.image == nil)
+        [self allDone];
 }
 
 -(IBAction)next:(id)sender
@@ -93,9 +90,8 @@ static bool show_scroller = false;
 
 -(void)onComicChanged:(Comic*)comic
 {
-    [spinner stopAnimation:self];
-    
     if(comic){
+        [spinner stopAnimation:self];
         [window setTitle:comic.title];
 
         //TODO center in screen, or center about its current position
@@ -106,11 +102,9 @@ static bool show_scroller = false;
         [cv scrollToPoint:NSMakePoint(0,0)];
         [scrollview reflectScrolledClipView:cv];
         [window setFrame:idealframe display:true animate:true];
-    }else if(all_comics_loaded){
-        [view setHidden:true];
-        [label setHidden:false];
-        [window setTitle:@"Three Panes"];
-    }else{
+    }else if(all_comics_loaded)
+        [self allDone];
+    else{
         // if we haven't finished loading then there is a chance a new comic
         // will still arrive, if not we handle that elsewhere
         [spinner startAnimation:self];
@@ -118,6 +112,18 @@ static bool show_scroller = false;
     }
     
     //TODO set next action disabled if no comics left
+}
+
+-(void)allDone
+{
+    NSRect rect = [self idealFrameForComicOfSize:NSMakeSize(350,250)];
+    
+    [spinner stopAnimation:self];
+    [label setHidden:false];
+    [view setHidden:true];
+    [scrollview setHasVerticalScroller:false];
+    [window setTitle:@"Three Panes"];
+    [window setFrame:rect display:true animate:true];
 }
 
 -(void)windowDidMove:(NSNotification*)notification

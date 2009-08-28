@@ -23,5 +23,6 @@
 
 -(void)onComicChanged:(Comic*)comic;
 -(IBAction)next:(id)sender;
+-(void)allDone;
 
 @end
