@@ -6,6 +6,7 @@
     NSMutableArray* houses;
     NSMutableArray* fetching;
     NSObject* delegate;
+	NSMutableArray* scripts;
 }
 -(id)initWithDelegate:(id)delegate;
 @end

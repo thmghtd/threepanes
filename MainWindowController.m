@@ -41,7 +41,7 @@
     all_comics_loaded = true;
 
     //TODO count can be 0 currently even though an image is showing :(
-    if([comcon count] == 0 && [view image] == nil){
+    if(comcon.count == 0 && view.image == nil){
         [spinner stopAnimation:self];
         [label setHidden:false];
         [view setHidden:true];
@@ -118,7 +118,7 @@ static bool show_scroller = false;
         // if we haven't finished loading then there is a chance a new comic
         // will still arrive, if not we handle that elsewhere
         [spinner startAnimation:self];
-		NSLog(@"[UI] Still loading: %@", comic.url);
+		NSLog(@"[UI] Waiting for PaperBoy to deliver next comic");
     }
     
     //TODO set next action disabled if no comics left
