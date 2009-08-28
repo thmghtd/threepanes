@@ -23,13 +23,14 @@
 
 -(void)delivery:(Comic*)comic
 {
-    [label setStringValue:@"No more comics today :("];    
     [next setEnabled:true];    
     [comcon addComic:comic];
 }
 
 -(void)deliveriesComplete
 {
+    NSLog(@"Deliveries complete!");
+    
     all_comics_loaded = true;
 
     //TODO count can be 0 currently even though an image is showing :(
@@ -116,7 +117,7 @@ static bool show_scroller = false;
 
 -(void)allDone
 {
-    NSRect rect = [self idealFrameForComicOfSize:NSMakeSize(350,250)];
+    NSRect rect = [self idealFrameForComicOfSize:NSMakeSize(480,360)];
     
     [spinner stopAnimation:self];
     [next setEnabled:false];
