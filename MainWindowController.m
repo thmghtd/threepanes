@@ -119,8 +119,9 @@ static bool show_scroller = false;
     NSRect rect = [self idealFrameForComicOfSize:NSMakeSize(350,250)];
     
     [spinner stopAnimation:self];
-    [label setHidden:false];
-    [view setHidden:true];
+    [next setEnabled:false];
+    [label setHidden:true];
+    [view setImage:[NSImage imageNamed:@"Balloon"]];
     [scrollview setHasVerticalScroller:false];
     [window setTitle:@"Three Panes"];
     [window setFrame:rect display:true animate:true];
