@@ -13,24 +13,25 @@
     data = [[NSMutableData alloc] init];
 }
 
--(NSURLConnection*)fetchNextComic
+-(void)fetchNextComic
 {
-    if(loading)return nil;
-    if(comics.count==0)return nil;
-    
-    assert(data.length == 0);
+	assert(data.length == 0);
 
-    loading=[comics lastObject];
+    if(loading)return;
+    if(comics.count==0)return;
+	if([comics.lastObject image])return;
+	
+    loading=comics.lastObject;
     [comics removeLastObject];
 
-    NSURLRequest* rq = [NSURLRequest requestWithURL:loading.url
-                                        cachePolicy:NSURLRequestReturnCacheDataElseLoad
-                                    timeoutInterval:10];
-    return [NSURLConnection connectionWithRequest:rq delegate:self];
+    [NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:loading.url
+															cachePolicy:NSURLRequestReturnCacheDataElseLoad
+														timeoutInterval:10]
+								  delegate:self];
 }
 
 -(void)addComic:(Comic*)comic
-{     
+{
     int const N=comics.count;
     int i=0;
     for(; i<N; ++i)
@@ -142,9 +143,11 @@ static void inline updateStoredTimestamp(Comic* comic)
 
     comic.image = [[NSImageRep imageRepClassForData:data] imageRepWithData:data];
     data.length = 0;
-    
+
     if(set_comic_when_loaded)
         [self setComic:comic];
+	else
+		[self addComic:comic];
 }
 
 -(NSUInteger)count
