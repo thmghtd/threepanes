@@ -104,8 +104,7 @@ static PublishingHouse* find_house(NSArray* houses, NSURLConnection* http)
 		return;
 	}
 	
-	NSString* scriptname = [[[scripts lastObject] retain] autorelease];
-	[scripts removeLastObject];
+	NSString* scriptname = [scripts objectAtIndex:0];
 
 #ifdef __DEBUG__
 	time_t last_time = time(0);
@@ -127,7 +126,11 @@ static PublishingHouse* find_house(NSArray* houses, NSURLConnection* http)
     [tableview reloadData];
 
 	bool is_active = [[[[NSUserDefaults standardUserDefaults] dictionaryForKey:scriptname] objectForKey:MBComicEnabled] boolValue];
-	if(is_active){
+
+    // remove from array before calling async functions
+    [scripts removeObjectAtIndex:0];
+	
+    if(is_active){
 		[fetching addObject:house];
 		[self gets:house];
 	}
@@ -155,7 +158,6 @@ static PublishingHouse* find_house(NSArray* houses, NSURLConnection* http)
     for (NSString* fn in files)
         if (![fn isEqualToString:@"threepanes.rb"] && ![fn isEqualToString:@"template.rb"])
             [scripts addObject:[fn lastPathComponent]];
-
 	[self execNextScript];
 
 	return self;
