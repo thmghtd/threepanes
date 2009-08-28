@@ -60,12 +60,13 @@ static PublishingHouse* find_house(NSArray* houses, NSURLConnection* http)
 
 @implementation PaperBoy
 
--(void)gets:(PublishingHouse*)boy
+-(void)gets:(PublishingHouse*)pub
 {   
     for(;;){
-        NSString* s = [boy fgetns];
+        NSString* s = [pub fgetns];
         if(!s){
-            [fetching removeObject:boy];
+            [fetching removeObject:pub];
+            NSLog(@"unstarted: %d, running: %d", scripts.count, fetching.count);
             if(fetching.count == 0 && scripts.count == 0)
                 [delegate performSelector:@selector(deliveriesComplete) withObject:nil];
             break;
@@ -78,16 +79,16 @@ static PublishingHouse* find_house(NSArray* houses, NSURLConnection* http)
 #undef _
             Comic* comic = [[Comic alloc] init];
             comic.url=url;
-            comic.utc=[[boy fgetns] integerValue];
-            comic.title=[boy fgetns];
-            comic.ident=[boy identifier];
+            comic.utc=[[pub fgetns] integerValue];
+            comic.title=[pub fgetns];
+            comic.ident=[pub identifier];
 
             NSLog(@"[PB] OHAI: %@", url);
             [delegate performSelector:@selector(delivery:) withObject:comic];
         }else{
             NSLog(@"[PB] HTTP GET %@", url);
-            boy.http = [[NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url]
-                                                     delegate:self] retain];
+            pub.http = [NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url]
+                                                     delegate:self];
             break;
         }
     }
@@ -96,7 +97,7 @@ static PublishingHouse* find_house(NSArray* houses, NSURLConnection* http)
 -(void)execNextScript
 {
 	if(scripts.count==0){
-		if(fetching.count == 0)
+		if(fetching.count==0)
 			// we do this here because if we never fetched anything then this never
 			// gets called, a rare usecase agreed, but still possible annoyingly
 			// of course this way it *may* get called twice, but meh
@@ -112,7 +113,7 @@ static PublishingHouse* find_house(NSArray* houses, NSURLConnection* http)
     tm->tm_sec = 0;
     tm->tm_min = 0;
     tm->tm_hour = 0;
-    tm->tm_mday -= 2;
+    tm->tm_mday -= 1;
     last_time = mktime(tm);
 #else
 	NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:scriptname];
@@ -158,6 +159,10 @@ static PublishingHouse* find_house(NSArray* houses, NSURLConnection* http)
     for (NSString* fn in files)
         if (![fn isEqualToString:@"threepanes.rb"] && ![fn isEqualToString:@"template.rb"])
             [scripts addObject:[fn lastPathComponent]];
+    
+    // don't terminate if the pipe closes unexpectedly!
+    signal(SIGPIPE, SIG_IGN);
+    
 	[self execNextScript];
 
 	return self;
@@ -177,26 +182,24 @@ static PublishingHouse* find_house(NSArray* houses, NSURLConnection* http)
 
 -(void)connection:(NSURLConnection*)http didReceiveData:(NSData*)data
 {
-    [[find_house(houses, http) data] appendData:data];    
+    [find_house(houses, http).data appendData:data];    
 }
 
 //TODO -(void)connection:willSendRequest:redirectResponse:
 //TODO -(void)connection:didFailWithError:
 -(void)connectionDidFinishLoading:(NSURLConnection*)http
 {
-    PublishingHouse* boy = find_house(houses, http);
-    uint32_t const n = [[boy data] length];
-    
+    PublishingHouse* pub = find_house(houses, http);
+    uint32_t const n = pub.data.length;
+
     // first write the size of the data in network-byte-order
     uint32_t size_of_index = htonl(n);
-    fwrite(&size_of_index, sizeof(size_of_index), 1, [boy pipe]);
-    // now write the data itself           
-    fwrite([[boy data] bytes], sizeof(char), n, [boy pipe]);
-    fflush([boy pipe]);
-    
-    [http release];
-    
-    [self gets:boy];
+    fwrite(&size_of_index, sizeof(size_of_index), 1, pub.pipe);
+    // now write the data itself
+    fwrite(pub.data.bytes, sizeof(char), n, pub.pipe);
+    fflush(pub.pipe);
+
+    [self gets:pub];
 }
 
 -(NSInteger)numberOfRowsInTableView:(NSTableView*)view
@@ -216,7 +219,6 @@ static PublishingHouse* find_house(NSArray* houses, NSURLConnection* http)
     else 
         return [boy valueForKey:col.identifier];
 }
-
 
 -(void)tableView:(NSTableView*)view setObjectValue:(id)o forTableColumn:(NSTableColumn*)col row:(NSInteger)row
 {

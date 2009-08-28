@@ -27,7 +27,7 @@
     bool enabled;
 }
 
-@property (nonatomic, assign) NSURLConnection* http;
+@property (nonatomic, retain) NSURLConnection* http;
 @property (nonatomic, readonly) NSString* identifier;
 @property (nonatomic, readonly) NSString* name;
 @property (nonatomic, readonly, assign) FILE* pipe;
