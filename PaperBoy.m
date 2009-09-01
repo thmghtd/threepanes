@@ -85,6 +85,7 @@ static PublishingHouse* find_house(NSArray* houses, NSURLConnection* http)
 
             NSLog(@"[PB] OHAI: %@", url);
             [delegate performSelector:@selector(delivery:) withObject:comic];
+            [comic release];
         }else{
             NSLog(@"[PB] HTTP GET %@", url);
             pub.http = [NSURLConnection connectionWithRequest:[NSURLRequest requestWithURL:url]
@@ -113,7 +114,7 @@ static PublishingHouse* find_house(NSArray* houses, NSURLConnection* http)
     tm->tm_sec = 0;
     tm->tm_min = 0;
     tm->tm_hour = 0;
-    tm->tm_mday -= 1;
+    tm->tm_mday -= 3;
     last_time = mktime(tm);
 #else
 	NSDictionary* dict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:scriptname];
@@ -139,6 +140,7 @@ static PublishingHouse* find_house(NSArray* houses, NSURLConnection* http)
 	// we do this asyncronously with a delay to prevent the UI ceasing
 	// and to ensure we get the first comic more quickly
 	[self performSelector:@selector(execNextScript) withObject:nil afterDelay:0.0];
+    [house release];
 }
 
 -(id)initWithDelegate:(id)_delegate
@@ -154,7 +156,8 @@ static PublishingHouse* find_house(NSArray* houses, NSURLConnection* http)
 	// this way we don't have to escape any paths passed to popen
 	[fm changeCurrentDirectoryPath:[[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"rb"]];
 	
-	NSArray* files = [fm directoryContentsAtPath:@"."];
+    // TODO error info
+	NSArray* files = [fm contentsOfDirectoryAtPath:@"." error:nil];
     scripts = [[NSMutableArray arrayWithCapacity:[files count]] retain];
     for (NSString* fn in files)
         if (![fn isEqualToString:@"threepanes.rb"] && ![fn isEqualToString:@"template.rb"])
